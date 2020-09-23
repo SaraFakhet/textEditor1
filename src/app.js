@@ -17,7 +17,6 @@ io.on('connection', (socket) => {
     log('connected')
     socket.on('message', (evt) => {
         log(evt)
-        log('rhaoue')
         socket.broadcast.emit('message', evt)
     })
 })
