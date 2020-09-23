@@ -1,13 +1,23 @@
-const log = console.log
-// initialize http server, socket.io and port number
-const http = require('http').createServer()
-const io = require('socket.io')(http)
-const port = 3000
-http.listen(port, () => log(`server listening on port: ${port}`))
+var express = require('express');  
+var app = express();
+var server = require('http').createServer(app);  
+var io = require('socket.io')(server);
+
+app.use(express.static(__dirname + '../node_modules'));  
+app.get('/', function(req, res,next) {  
+    res.sendFile(__dirname + '/index.html');
+});
+
+const hostname = '127.0.0.1';
+const port = 3000;
+const log = console.log;    
+
+server.listen(port, hostname, () => log(`Server running at http://${hostname}:${port}/`))
 io.on('connection', (socket) => {
     log('connected')
     socket.on('message', (evt) => {
         log(evt)
+        log('rhaoue')
         socket.broadcast.emit('message', evt)
     })
 })

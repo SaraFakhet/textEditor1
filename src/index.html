@@ -6,6 +6,21 @@
         <textarea rows="50" cols="80" id="editor" style="background-color:#f8f9fa;color:black" placeholder="Ecrivez ici..."></textarea>
     </div>
 </body>
-<script src="../node_modules/socket.io-client/dist/socket.io.js"></script>
-<script src="./client.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io('http://localhost:3000');
+    const l = console.log
+    function getEl(id) {
+        return document.getElementById(id)
+    }
+    const editor = getEl("editor")
+    editor.addEventListener("keyup", (evt) => {
+        const text = editor.value
+        console.log('test')
+        socket.send(text)
+    })
+    socket.on('message', (data) => {
+        editor.value = data
+    })
+</script>
 </html>
