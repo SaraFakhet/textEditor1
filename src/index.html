@@ -16,7 +16,6 @@
     const editor = getEl("editor")
     editor.addEventListener("keyup", (evt) => {
         const text = editor.value
-        console.log('test')
         socket.send(text)
     })
     socket.on('message', (data) => {
