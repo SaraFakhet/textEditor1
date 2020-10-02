@@ -1,4 +1,107 @@
+<!DOCTYPE html>
 <html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body {margin:0;}
+
+.icon-bar {
+  width: 100%;
+  background-color: #555;
+  overflow: auto;
+}
+
+.icon-bar a {
+  float: left;
+  width: 20%;
+  text-align: center;
+  padding: 12px 0;
+  transition: all 0.3s ease;
+  color: white;
+  font-size: 36px;
+}
+
+.icon-bar a:hover {
+  background-color: #000;
+}
+
+.active {
+  background-color: #4CAF50;
+}
+</style>
+<body>
+
+<div class="icon-bar">
+  <a class="active" href="#"><i class="fa fa-home"></i></a> 
+  <a href="#"><i class="fa fa-search"></i></a> 
+  <a href="#"><i class="fa fa-save"></i></a> 
+  <a href="#"><i class="fa fa-trash"></i></a> 
+</div>
+
+</body>
+</html> 
+
+
+ <style>
+ .boutonmenuprincipal {
+background-color: #298700;
+color: white;
+border: none;
+cursor: pointer;
+padding:20px;
+margin-top:15px;
+font-size: 14px;
+}
+.boutonmenuprincipal:hover {
+background-color: #298700;
+}
+.dropdown {
+position: relative;
+display: inline-block;
+}
+.dropdown-child {
+display: none;
+background-color: #3cc202;
+min-width: 50px;
+}
+.dropdown-child a {
+color: white;
+padding: 20px;
+text-decoration: none;
+display: block;
+}
+.dropdown:hover .dropdown-child {
+display: block;
+}
+</style>
+
+
+<button><img src="https://static.thenounproject.com/png/609395-200.png"</button>
+
+<button class="boutonmenuprincipal">Bold</button>
+<button class="boutonmenuprincipal">Italic</button>
+<button class="boutonmenuprincipal">Underline</button>
+
+<div class="dropdown">
+ <button class="boutonmenuprincipal">Font Text</button>
+ <div class="dropdown-child">
+ <a href="#">Calibri</a>
+ <a href="#">Arial</a>
+ <a href="#">Berlin</a>
+ <a href="#">Corbel</a>
+ </div>
+ </div>
+ 
+ <div class="dropdown">
+ <button class="boutonmenuprincipal">Font Size</button>
+ <div class="dropdown-child">
+ <a href="#">12</a>
+ <a href="#">14</a>
+ <a href="#">16</a>
+ <a href="#">18</a>
+ </div>
+ </div>
+
 <title>Editeur collaboratif</title>
 <body style="text-align:center;background-color:#dfe0e1">
     <h3>Editeur collaboratif</h3>
