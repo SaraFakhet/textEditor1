@@ -3,7 +3,7 @@ const l = console.log
 function getEl(id) {
     return document.getElementById(id)
 }
-const editor = getEl("editor")
+const editor = getEl("textarea1")
 editor.addEventListener("keyup", (evt) => {
     const text = editor.value
     socket.send(text)
