@@ -15,7 +15,7 @@ body {margin:0;}
 
 .icon-bar a {
   float: left;
-  width: 20%;
+  width: 25%;
   text-align: center;
   padding: 12px 0;
   transition: all 0.3s ease;
@@ -96,8 +96,13 @@ body {margin:0;}
   border-radius: 5px;
   padding: 6px;
   height: 44px;
-  width: 1050px;
+  width: 1000px;
   background-color: #ececea;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 [role="toolbar"].focus {
@@ -292,7 +297,7 @@ var SpinButton = function (domNode, toolbar)  {
   this.valueMin  = 8;
   this.valueMax  = 40;
   this.valueNow  = 12;
-  this.valueText = this.valueNow + ' Point';
+  this.valueText = this.valueNow + ' pt';
 
   this.keyCode = Object.freeze({
     'UP': 38,
@@ -339,7 +344,7 @@ SpinButton.prototype.setValue = function (value) {
   }
 
   this.valueNow  = value;
-  this.valueText = value + ' Point';
+  this.valueText = value + ' pt';
 
   this.domNode.setAttribute('aria-valuenow', this.valueNow);
   this.domNode.setAttribute('aria-valuetext', this.valueText);
@@ -1550,7 +1555,8 @@ FontMenu.prototype.close = function (force) {
 	</div>
 </body>
 
-<br>
+
+<h3 style="font-family: Georgia, 'Times New Roman', Times, serif;">Editeur collaboratif</h3>
 
 <div class="format"
      role="toolbar"
@@ -1641,7 +1647,15 @@ FontMenu.prototype.close = function (force) {
             aria-label="Font: Sans-serif"
             style="text-align: left; width: 140px; font-family: sans-serif">
       SANS-SERIF
-      <span></span>
+      <span class="decrease">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             width="12"
+             height="12">
+          <polygon class="decrease"
+                   fill="#333"
+                   points="0,2 11,2 6,12"></polygon>
+        </svg>
+      </span>
     </button>
     <ul role="menu"
         id="menu1"
@@ -1720,7 +1734,6 @@ FontMenu.prototype.close = function (force) {
 
 <title>Editeur collaboratif</title>
 <body style="text-align:center;background-color:#dfe0e1">
-	<h3>Editeur collaboratif</h3>
 	<div>
 		<textarea id="textarea1"
 			rows="50"
