@@ -232,14 +232,6 @@ body {margin:0;}
   float: right;
 }
 
-[role="toolbar"] button[aria-haspopup] span::after {
-  content: url(../images/pulldown-icon.svg);
-}
-
-[role="toolbar"] button[aria-haspopup]:focus span::after {
-  content: url(../images/pulldown-icon-focus.svg);
-}
-
 [role="toolbar"] [role="spinbutton"] .increase,
 [role="toolbar"] [role="spinbutton"] .decrease {
   width: 20px;
@@ -314,8 +306,6 @@ SpinButton.prototype.setValue = function (value) {
 
   this.valueNow  = value;
   this.valueText = value + ' pt';
-  this.domNode.setAttribute('aria-valuenow', this.valueNow);
-  this.domNode.setAttribute('aria-valuetext', this.valueText);
 
   if (this.valueDomNode) {
     this.valueDomNode.innerHTML = this.valueText;
@@ -856,7 +846,7 @@ FontMenu.prototype.close = function (force) {
             aria-pressed="false"
             value="bold"
             tabindex="0">
-      <span class="fas fa-bold" aria-hidden="true"></span>
+      <span class="fa fa-bold" aria-hidden="true"></span>
       <span class="popup-label">
         Bold
       </span>
@@ -865,7 +855,7 @@ FontMenu.prototype.close = function (force) {
             aria-pressed="false"
             value="italic"
             tabindex="-1">
-      <span class="fas fa-italic" aria-hidden="true"></span>
+      <span class="fa fa-italic" aria-hidden="true"></span>
       <span class="popup-label">
         Italic
       </span>
@@ -874,7 +864,7 @@ FontMenu.prototype.close = function (force) {
             aria-pressed="false"
             value="underline"
             tabindex="-1">
-      <span class="fas fa-underline" aria-hidden="true"></span>
+      <span class="fa fa-underline" aria-hidden="true"></span>
       <span class="popup-label">
         Underline
       </span>
@@ -887,7 +877,7 @@ FontMenu.prototype.close = function (force) {
             class="item align-left popup"
             aria-checked="true"
             tabindex="-1">
-      <span class="fas fa-align-left" aria-hidden="true"></span>
+      <span class="fa fa-align-left" aria-hidden="true"></span>
       <span class="popup-label">
         Text Align Left
       </span>
@@ -896,7 +886,7 @@ FontMenu.prototype.close = function (force) {
             class="item align-center popup"
             aria-checked="false"
             tabindex="-1">
-      <span class="fas fa-align-center" aria-hidden="true"></span>
+      <span class="fa fa-align-center" aria-hidden="true"></span>
       <span class="popup-label">
         Text Align Center
       </span>
@@ -905,7 +895,7 @@ FontMenu.prototype.close = function (force) {
             class="item align-right popup"
             aria-checked="false"
             tabindex="-1">
-      <span class="fas fa-align-right" aria-hidden="true"></span>
+      <span class="fa fa-align-right" aria-hidden="true"></span>
       <span class="popup-label">
         Text Align Right
       </span>
