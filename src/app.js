@@ -3,6 +3,30 @@ var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 
+/*mongoose*/
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/myDB', {useNewUrlParser: true, useUnifiedTopology: true});
+const db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+    // we're connected!
+    console.log("myDB connected");
+});
+
+var schema = mongoose.Schema({
+    name: String
+});
+
+var Model = mongoose.model("model", schema, "myCollection");
+var doc1 = new Model({ name: "John"});
+doc1.save(function(err, doc) {
+    if (err) return console.error(err);
+    console.log("Document inserted succussfully!");
+});
+
+/*end mongoose*/
+
 app.use(express.static(__dirname + '../node_modules'));
 app.get('/', function(req, res,next) {  
     res.sendFile(__dirname + '/index.html');
