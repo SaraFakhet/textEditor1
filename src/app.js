@@ -15,15 +15,14 @@ db.once('open', function() {
 });
 
 var schema = mongoose.Schema({
-    name: String
+    fileName: String,
+    buffer: String,
+    // bold: bool
+    // underline: bool
+    // italic: bool
 });
 
 var Model = mongoose.model("model", schema, "myCollection");
-var doc1 = new Model({ name: "John"});
-doc1.save(function(err, doc) {
-    if (err) return console.error(err);
-    console.log("Document inserted succussfully!");
-});
 
 /*end mongoose*/
 
@@ -44,6 +43,17 @@ io.on('connection', (socket) => {
     socket.on('message', (evt) => {
 		fullText = evt
         socket.broadcast.emit('message', evt)
+    })
+    socket.on('bold', () => {
+        socket.broadcast.emit('bold')
+    })
+    socket.on('save', (evt) => {
+        // db => push fulltext, name, bold (bool), italic (bool), underline (bool)
+        var doc1 = new Model({ fileName: evt, buffer: fullText});
+        doc1.save(function(err, doc) {
+            if (err) return console.error(err);
+        });
+
     })
 })
 io.on('disconnect', (evt) => {
