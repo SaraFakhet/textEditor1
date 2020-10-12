@@ -50,7 +50,7 @@ io.on('connection', (socket) => {
     socket.on('save', (evt) => {
         // db => push fulltext, name, bold (bool), italic (bool), underline (bool)
         var doc1 = new Model({ fileName: evt, buffer: fullText});
-        doc1.save(function(err, doc) {
+        doc1.save(function(err) {
             if (err) return console.error(err);
         });
 
