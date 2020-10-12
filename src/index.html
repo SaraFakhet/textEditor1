@@ -4,7 +4,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <style>
-
 body {margin:0;}
 
 .icon-bar {
@@ -400,8 +399,6 @@ FontMenuItem.prototype.init = function () {
 
   this.font = this.domNode.textContent.trim().toLowerCase();
   this.domNode.addEventListener('click',      this.handleClick.bind(this));
-  this.domNode.addEventListener('focus',      this.handleFocus.bind(this));
-  this.domNode.addEventListener('blur',       this.handleBlur.bind(this));
   this.domNode.addEventListener('mouseover',  this.handleMouseover.bind(this));
   this.domNode.addEventListener('mouseout',   this.handleMouseout.bind(this));
 };
@@ -410,16 +407,8 @@ FontMenuItem.prototype.init = function () {
 
 FontMenuItem.prototype.handleClick = function (event) {
   this.fontMenu.setFontFamily(this, this.font);
-  this.fontMenu.setFocusToController();
+  this.fontMenu.setFocusToFirstItem();
   this.fontMenu.close(true);
-};
-
-FontMenuItem.prototype.handleFocus = function (event) {
-  this.fontMenu.setFocus();
-};
-
-FontMenuItem.prototype.handleBlur = function (event) {
-  this.fontMenu.removeFocus();
 };
 
 FontMenuItem.prototype.handleMouseover = function (event) {
@@ -455,10 +444,6 @@ FormatToolbar.prototype.init = function () {
   var i, items, toolbarItem, menuButton;
 
   this.textarea = document.getElementById(this.domNode.getAttribute('aria-controls'));
-  this.textarea.style.width = (this.domNode.getBoundingClientRect().width - 12) + 'px';
-  this.textarea.addEventListener('mouseup', this.selectTextContent.bind(this));
-  this.textarea.addEventListener('keyup', this.selectTextContent.bind(this));
-  this.selected = this.textarea.selectText;
 
   items = this.domNode.querySelectorAll('.item');
 
@@ -483,12 +468,6 @@ FormatToolbar.prototype.init = function () {
     var s = new SpinButton(spinButtons[i], this);
     s.init();
   }
-};
-
-FormatToolbar.prototype.selectTextContent = function () {
-  this.start = this.textarea.selectionStart;
-  this.end = this.textarea.selectionEnd;
-  this.selected = this.textarea.value.substring(this.start, this.end);
 };
 
 FormatToolbar.prototype.toggleBold = function (toolbarItem) {
@@ -526,13 +505,6 @@ FormatToolbar.prototype.toggleItalic = function (toolbarItem) {
 
 FormatToolbar.prototype.changeFontSize = function (value) {
   this.textarea.style.fontSize = value + 'pt';
-};
-
-FormatToolbar.prototype.redirectLink = function (toolbarItem) {
-  window.open(
-    toolbarItem.domNode.href,
-    '_blank'
-  );
 };
 
 FormatToolbar.prototype.setAlignment = function (toolbarItem) {
@@ -598,40 +570,6 @@ FormatToolbar.prototype.setFocusItem = function (item) {
   }
   item.domNode.setAttribute('tabindex', '0');
   item.domNode.focus();
-};
-
-FormatToolbar.prototype.setFocusToNext = function (currentItem) {
-  var index, newItem;
-
-  if (currentItem === this.lastItem) {
-    newItem = this.firstItem;
-  }
-  else {
-    index = this.toolbarItems.indexOf(currentItem);
-    newItem = this.toolbarItems[index + 1];
-  }
-  this.setFocusItem(newItem);
-};
-
-FormatToolbar.prototype.setFocusToPrevious = function (currentItem) {
-  var index, newItem;
-
-  if (currentItem === this.firstItem) {
-    newItem = this.lastItem;
-  }
-  else {
-    index = this.toolbarItems.indexOf(currentItem);
-    newItem = this.toolbarItems[index - 1];
-  }
-  this.setFocusItem(newItem);
-};
-
-FormatToolbar.prototype.setFocusToFirst = function (currentItem) {
-  this.setFocusItem(this.firstItem);
-};
-
-FormatToolbar.prototype.setFocusToLast = function (currentItem) {
-  this.setFocusItem(this.lastItem);
 };
 
 FormatToolbar.prototype.hidePopupLabels = function () {
@@ -770,25 +708,10 @@ var FontMenu = function (domNode, controllerObj) {
   var elementChildren,
     msgPrefix = 'FontMenu constructor argument domNode ';
 
-  // Check whether domNode is a DOM element
-  if (!domNode instanceof Element) {
-    throw new TypeError(msgPrefix + 'is not a DOM Element.');
-  }
-
-  // Check whether domNode has child elements
-  if (domNode.childElementCount === 0) {
-    throw new Error(msgPrefix + 'has no element children.');
-  }
-
-  // Check whether domNode child elements are A elements
   var childElement = domNode.firstElementChild;
 
   while (childElement) {
     var menuitem = childElement.firstElementChild;
-
-    if (menuitem && menuitem === 'A') {
-      throw new Error(msgPrefix + 'Cannot have descendant elements are A elements.');
-    }
     childElement = childElement.nextElementSibling;
   }
 
@@ -845,24 +768,6 @@ FontMenu.prototype.handleMouseout = function (event) {
   setTimeout(this.close.bind(this, false), 300);
 };
 
-FontMenu.prototype.setFocusToController = function (command) {
-  if (typeof command !== 'string') {
-    command = '';
-  }
-
-  if (command === 'previous') {
-    this.controller.toolbar.setFocusToPrevious(this.controller.toolbarItem);
-  }
-  else {
-    if (command === 'next') {
-      this.controller.toolbar.setFocusToNext(this.controller.toolbarItem);
-    }
-    else {
-      this.controller.domNode.focus();
-    }
-  }
-};
-
 FontMenu.prototype.setFontFamily = function (menuitem, font) {
   for (var i = 0; i < this.menuitems.length; i++) {
     var mi = this.menuitems[i];
@@ -875,68 +780,12 @@ FontMenu.prototype.setFocusToFirstItem = function () {
   this.firstItem.domNode.focus();
 };
 
-FontMenu.prototype.setFocusToLastItem = function () {
-  this.lastItem.domNode.focus();
-};
-
-FontMenu.prototype.setFocusToPreviousItem = function (currentItem) {
-  var index;
-
-  if (currentItem === this.firstItem) {
-    this.lastItem.domNode.focus();
-  }
-  else {
-    index = this.menuitems.indexOf(currentItem);
-    this.menuitems[index - 1].domNode.focus();
-  }
-};
-
-FontMenu.prototype.setFocusToNextItem = function (currentItem) {
-  var index;
-
-  if (currentItem === this.lastItem) {
-    this.firstItem.domNode.focus();
-  }
-  else {
-    index = this.menuitems.indexOf(currentItem);
-    this.menuitems[index + 1].domNode.focus();
-  }
-};
-
 FontMenu.prototype.setFocusToCheckedItem = function () {
   for (var index = 0; index < this.menuitems.length; index++) {
     if (this.menuitems[index].domNode.getAttribute('aria-checked') === 'true') {
       this.menuitems[index].domNode.focus();
     }
   }
-};
-
-FontMenu.prototype.setFocusByFirstCharacter = function (currentItem, char) {
-  var start, index, char = char.toLowerCase();
-
-  start = this.menuitems.indexOf(currentItem) + 1;
-  if (start === this.menuitems.length) {
-    start = 0;
-  }
-
-  index = this.getIndexFirstChars(start, char);
-
-  if (index === -1) {
-    index = this.getIndexFirstChars(0, char);
-  }
-
-  if (index > -1) {
-    this.menuitems[index].domNode.focus();
-  }
-};
-
-FontMenu.prototype.getIndexFirstChars = function (startIndex, char) {
-  for (var i = startIndex; i < this.firstChars.length; i++) {
-    if (char === this.firstChars[i]) {
-      return i;
-    }
-  }
-  return -1;
 };
 
 FontMenu.prototype.setFocus = function () {
