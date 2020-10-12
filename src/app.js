@@ -53,7 +53,6 @@ io.on('connection', (socket) => {
         doc1.save(function(err, doc) {
             if (err) return console.error(err);
         });
-
     })
 })
 io.on('disconnect', (evt) => {

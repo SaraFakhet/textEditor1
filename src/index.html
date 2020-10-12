@@ -1754,7 +1754,7 @@ FontMenu.prototype.close = function (force) {
     const editor = getEl("textarea1")
     editor.addEventListener("keyup", (evt) => {
         const text = editor.value
-        socket.send(text)
+        socket.broadcast.emit('message', text)
     })
     socket.on('message', (data) => {
         editor.value = data
