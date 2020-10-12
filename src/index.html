@@ -1549,9 +1549,9 @@ FontMenu.prototype.close = function (force) {
 <body>
 	<div class="icon-bar">
 		<a class="active" href="#"><i class="fa fa-home"></i></a> 
-		<a href="#"><i class="fa fa-search"></i></a> 
+		<a href=javascript:void(0); id="loadButton"><i class="fa fa-search"></i></a>
 		<a href=javascript:void(0); id="saveButton"><i class="fa fa-save"></i></a>
-		<a href="#"><i class="fa fa-trash"></i></a> 
+		<a href="#"><i class="fa fa-trash"></i></a>
 	</div>
 </body>
 
@@ -1754,7 +1754,7 @@ FontMenu.prototype.close = function (force) {
     const editor = getEl("textarea1")
     editor.addEventListener("keyup", (evt) => {
         const text = editor.value
-        socket.broadcast.emit('message', text)
+        socket.emit('message', text)
     })
     socket.on('message', (data) => {
         editor.value = data
@@ -1763,6 +1763,14 @@ FontMenu.prototype.close = function (force) {
     const saveButton = document.getElementById('saveButton');
     saveButton.onclick = function() {
       socket.emit('save', 'TODO title');
-    }
+    };
+
+    const loadButton = document.getElementById('loadButton');
+    loadButton.onclick = function() {
+      socket.emit('load', 'TODO title');
+    };
+    socket.on('loadBuffer', (buffer) => {
+      editor.value = buffer
+    });
 </script>
 </html>

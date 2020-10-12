@@ -22,7 +22,7 @@ var schema = mongoose.Schema({
     // italic: bool
 });
 
-var Model = mongoose.model("model", schema, "myCollection");
+var myModel = mongoose.model("model", schema, "myCollection");
 
 /*end mongoose*/
 
@@ -47,12 +47,17 @@ io.on('connection', (socket) => {
     socket.on('bold', () => {
         socket.broadcast.emit('bold')
     })
-    socket.on('save', (evt) => {
+    socket.on('save', async (evt) => {
         // db => push fulltext, name, bold (bool), italic (bool), underline (bool)
-        var doc1 = new Model({ fileName: evt, buffer: fullText});
-        doc1.save(function(err) {
+        let doc1 = new myModel({fileName: evt, buffer: fullText});
+        await doc1.save(function (err) {
             if (err) return console.error(err);
         });
+    })
+    socket.on('load', async (evt) => {
+        let doc1 = await myModel.find({fileName: evt}).exec();
+        socket.emit('loadBuffer', doc1[0].buffer)
+        socket.broadcast.emit('loadBuffer', doc1[0].buffer)
     })
 })
 io.on('disconnect', (evt) => {
