@@ -5,7 +5,7 @@ var io = require('socket.io')(server);
 
 /*mongoose*/
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/myDB', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://localhost:27017/myDB', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true});
 const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -15,7 +15,10 @@ db.once('open', function() {
 });
 
 var schema = mongoose.Schema({
-    fileName: String,
+    fileName: {
+        type: String,
+        unique: true,
+    },
     buffer: String,
     // bold: bool
     // underline: bool
@@ -50,9 +53,11 @@ io.on('connection', (socket) => {
     socket.on('save', async (evt) => {
         // db => push fulltext, name, bold (bool), italic (bool), underline (bool)
         let doc1 = new myModel({fileName: evt, buffer: fullText});
-        await doc1.save(function (err) {
-            if (err) return console.error(err);
-        });
+        try {
+            await doc1.save();
+        } catch (e) {
+            await myModel.updateOne({fileName:evt},{ buffer: fullText});
+        }
     })
     socket.on('load', async (evt) => {
         let doc1 = await myModel.find({fileName: evt}).exec();
