@@ -1,26 +1,10 @@
 var User = function () {
-    this.username = "unknown";
-    this.loginButton = null;
-    this.loginInput = null;
+    this.username = "";
 }
 
-User.prototype.init() {
-
+User.prototype.init = function () {
+    document.getElementById('loginButton').addEventListener("click", () => {
+        document.querySelector('.bg-modal-login').style.display = "none";
+        this.username = document.getElementById('loginInput').value;
+    })
 }
-
-const saveButton = document.getElementById('saveButton');
-saveButton.onclick = function() {
-    document.querySelector('.bg-modal').style.display = "flex";
-};
-
-const submitSaveButton = document.getElementById('submitSaveButton');
-submitSaveButton.onclick = function() {
-    document.querySelector('.bg-modal').style.display = "none";
-    socket.emit('save', document.getElementById('submitSaveInput').value);
-};
-
-window.addEventListener('load', function () {
-    //var user = document.querySelector('.user');
-    var user = new User();
-    user.init();
-});

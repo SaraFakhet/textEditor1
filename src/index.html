@@ -225,16 +225,19 @@
         </div>
 
     <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/user.js"></script>
     <script>
         var socket = io('http://localhost:3000');
         function getEl(id) {
             return document.getElementById(id)
         }
+        var user = new User();
+        user.init();
         const editor = getEl("textarea1")
         editor.addEventListener("keyup", (evt) => {
             const text = editor.value
             socket.emit('message', text)
-            socket.emit('version', "SHAM")
+            socket.emit('version', user.username)
         })
         socket.on('message', (data) => {
             editor.value = data
@@ -300,7 +303,6 @@
                     "<div onclick=onClickTrash(\""+elt.fileName+"\")>" + '<img src="images/document.svg">' + "<p style='margin: 10px; font-family: sans-serif;'>" + elt.fileName + "</p></div>"
             })
         })
-
     </script>
     <script src="/js/fontMenu.js"></script>
     <script src="/js/fontMenuButton.js"></script>
@@ -308,6 +310,5 @@
     <script src="/js/fontToolbarItem.js"></script>
     <script src="/js/formatToolbar.js"></script>
     <script src="/js/spinButton.js"></script>
-    <script src="/js/user.js"></script>
 </body>
 </html>
