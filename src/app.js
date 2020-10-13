@@ -62,10 +62,11 @@ io.on('connection', (socket) => {
     })
 
     socket.on('bold', () => {
-        socket.broadcast.emit('bold')
+        socket.broadcast.emit('bold');
     })
     socket.on('save', async (evt) => {
         // db => push fulltext, name, bold (bool), italic (bool), underline (bool)
+        evt = evt.replace(' ', '_');
         let doc1 = new myModel({fileName: evt, buffer: fullText});
         try {
             await doc1.save();
