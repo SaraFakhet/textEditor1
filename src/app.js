@@ -60,6 +60,9 @@ io.on('connection', (socket) => {
     socket.emit('bold', bold);
     socket.emit('underline', underline);
     socket.emit('italic', italic);
+    socket.emit('align', align);
+    socket.emit('font', font);
+    socket.emit('fontSize', fontSize);
     socket.on('message', (evt) => {
         fullText = evt
         socket.emit('message', evt)
