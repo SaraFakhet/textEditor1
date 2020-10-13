@@ -4,7 +4,8 @@ body {
     background-color:#dfe0e1;
 }
 
-h1 {
+h1,
+.popupTitle {
     font-family: sans-serif;
 }
 

@@ -4,6 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="/css/style.css">
+<link rel="stylesheet" type="text/css" href="/css/popupModal.css">
 
 
 <title>Editeur collaboratif</title>
@@ -172,6 +173,17 @@
 			placeholder="Ecrivez ici..."></textarea>
 	</div>
 
+    <div class="bg-modal">
+        <div class="modal-contents">
+            <div class="close">+</div>
+            <form action="">
+                <div class="popupTitle">Sauvegarder</div>
+                <input type="text" id="submitSaveInput" placeholder="Nom du fichier">
+                <a href="#" id="submitSaveButton" class="button">Valider</a>
+              </form>
+        </div>
+    </div>
+
     <script src="/socket.io/socket.io.js"></script>
     <script>
         var socket = io('http://localhost:3000');
@@ -190,12 +202,23 @@
 
         const saveButton = document.getElementById('saveButton');
         saveButton.onclick = function() {
-            socket.emit('save', 'TODO title');
+            document.querySelector('.bg-modal').style.display = "flex";
         };
 
         const loadButton = document.getElementById('loadButton');
         loadButton.onclick = function() {
             socket.emit('load', 'TODO title');
+        };
+
+        document.querySelector('.close').addEventListener("click", function() {
+            document.querySelector('.bg-modal').style.display = "none";
+        });
+
+        const submitSaveButton = document.getElementById('submitSaveButton');
+        var saveFileName = document.getElementById('submitSaveInput').value;
+        submitSaveButton.onclick = function() {
+            document.querySelector('.bg-modal').style.display = "none";
+            socket.emit('save', saveFileName); //FIXME
         };
         socket.on('loadBuffer', (buffer) => {
             editor.value = buffer
