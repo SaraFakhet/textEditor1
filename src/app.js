@@ -24,7 +24,7 @@ var schema = mongoose.Schema({
 var save = mongoose.Schema({
     user: String,
     buffer: String,
-    // timestamp
+    createdAt: Object,
 });
 
 var mySave = mongoose.model("save", save, "myCollection");
@@ -52,7 +52,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('version', async (evt) => {
-        let version = new mySave({user: evt, buffer: fullText});
+        let version = new mySave({user: evt, buffer: fullText, createdAt: Date.now()});
         await version.save(function (err) {
             if (err) return console.error(err);
         })
