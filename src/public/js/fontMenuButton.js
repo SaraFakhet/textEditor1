@@ -19,6 +19,14 @@ FontMenuButton.prototype.init = function () {
         }
     }
     this.domNode.addEventListener('click', this.handleClick.bind(this));
+	
+	socket.on('font', (font) => {
+		this.value = font;
+		this.domNode.innerHTML = font.toUpperCase() + '<span></span>';
+		this.domNode.style.fontFamily = font;
+		this.domNode.setAttribute('aria-label', 'Font: ' + font);
+		this.toolbar.textarea.style.fontFamily = font;
+	})
 };
 
 FontMenuButton.prototype.handleClick = function (event, menuButton) {

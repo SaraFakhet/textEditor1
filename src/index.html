@@ -12,14 +12,14 @@
 
 <body>
     <div class="icon-bar">
-        <a class="active" href="#"><i class="fa fa-home"></i></a>
+        <a class="active" id="username"></a>
         <a href=javascript:void(0); id="loadButton"><i class="fa fa-search"></i></a>
         <a href=javascript:void(0); id="saveButton"><i class="fa fa-save"></i></a>
         <a href=javascript:void(0); id="trashButton"><i class="fa fa-trash"></i></a>
     </div>
 
     <h1>Éditeur collaboratif</h1>
-
+    <h2></h2>
     <div class="format"
          role="toolbar"
          aria-label="Text Formatting"
@@ -209,6 +209,14 @@
         </div>
     </div>
 
+    <div class="bg-modal-login">
+            <form action="">
+                <div class="popupTitle loginTitle">Bienvenue !</div>
+                <input type="text" id="loginInput" placeholder="Pseudo">
+                <a href="#" id="loginButton" class="button">Valider</a>
+            </form>
+    </div>
+
     <div class="bg-modal3">
             <div class="modal-contentsbisbis">
                 <div class="close3">+</div>
@@ -226,16 +234,19 @@
         </div>
 
     <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/user.js"></script>
     <script>
         var socket = io('http://localhost:3000');
         function getEl(id) {
             return document.getElementById(id)
         }
+        var user = new User();
+        user.init();
         const editor = getEl("textarea1")
         editor.addEventListener("keyup", (evt) => {
             const text = editor.value
             socket.emit('message', text)
-            socket.emit('version', "SHAM")
+            socket.emit('version', user.username)
         })
         socket.on('message', (data) => {
             editor.value = data
@@ -278,6 +289,7 @@
 
         function onClickLoad(filename) {
             socket.emit('load', filename);
+            socket.emit('trashAllVersion');
             document.querySelector('.bg-modal2').style.display = "none";
         }
 
@@ -287,19 +299,20 @@
         }
 
         socket.on('loadallnext', async (docs) => {
+            document.getElementById("grid").innerHTML = ""
             docs.forEach((elt) => {
-                document.getElementById("grid").innerHTML =
+                document.getElementById("grid").innerHTML +=
                     "<div onclick=onClickLoad(\""+elt.fileName+"\")>" + '<img src="images/document.svg">' + "<p style='margin: 10px; font-family: sans-serif;'>" + elt.fileName + "</p></div>"
             })
         })
 
         socket.on('trashallnext', async (docs) => {
+            document.getElementById("grid2").innerHTML = ""
             docs.forEach((elt) => {
-                document.getElementById("grid2").innerHTML =
+                document.getElementById("grid2").innerHTML +=
                     "<div onclick=onClickTrash(\""+elt.fileName+"\")>" + '<img src="images/document.svg">' + "<p style='margin: 10px; font-family: sans-serif;'>" + elt.fileName + "</p></div>"
             })
         })
-
     </script>
     <script src="/js/fontMenu.js"></script>
     <script src="/js/fontMenuButton.js"></script>
@@ -307,6 +320,5 @@
     <script src="/js/fontToolbarItem.js"></script>
     <script src="/js/formatToolbar.js"></script>
     <script src="/js/spinButton.js"></script>
-
 </body>
 </html>
