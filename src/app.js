@@ -24,13 +24,13 @@ var schema = mongoose.Schema({
     underline: Boolean,
     italic: Boolean
 });
-var save = mongoose.Schema({
+var saveSchema = mongoose.Schema({
     user: String,
     buffer: String,
     createdAt: Object,
 });
 
-var mySave = mongoose.model("save", save, "myCollection");
+var mySave = mongoose.model("save", saveSchema, "myCollection2");
 var myModel = mongoose.model("model", schema, "myCollection");
 
 /*end mongoose*/
