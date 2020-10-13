@@ -22,7 +22,10 @@ var schema = mongoose.Schema({
     buffer: String,
     bold: Boolean,
     underline: Boolean,
-    italic: Boolean
+    italic: Boolean,
+	align: String,
+	font: String,
+	fontSize: Number,
 });
 var saveSchema = mongoose.Schema({
     user: String,
@@ -47,6 +50,9 @@ var fullText = ""
 var bold = false
 var underline = false
 var italic = false
+var align = 'left'
+var font = 'SANS-SERIF'
+var fontSize = 14
 
 server.listen(port, hostname, () => log(`Server running at http://${hostname}:${port}/`))
 io.on('connection', (socket) => {
@@ -68,7 +74,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('bold', () => {
-        bold = !bold
+        bold = !bold;
         socket.broadcast.emit('bold', bold);
     })
     socket.on('underline', () => {
@@ -76,8 +82,20 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('underline', underline);
     })
     socket.on('italic', () => {
-        italic = !italic
+        italic = !italic;
         socket.broadcast.emit('italic', italic);
+    })
+	socket.on('align', async (value) => {
+		align = value;
+        socket.broadcast.emit('align', value);
+    })
+	socket.on('font', async (value) => {
+		font = value;
+        socket.broadcast.emit('font', value);
+    })
+	socket.on('fontSize', async (value) => {
+		fontSize = value;
+        socket.broadcast.emit('fontSize', value);
     })
 
     socket.on('save', async (evt) => {
@@ -92,6 +110,10 @@ io.on('connection', (socket) => {
     socket.on('loadall', async () => {
         let docs = await myModel.find({});
         socket.emit('loadallnext', docs);
+    })
+    socket.on('trashall', async (evt) => {
+        let docs = await myModel.find({});
+        socket.emit('trashallnext', docs);
     })
     socket.on('load', async (evt) => {
         let doc1 = await myModel.find({fileName: evt}).exec();
@@ -109,6 +131,9 @@ io.on('connection', (socket) => {
         // send if true to front
         socket.emit('message', fullText)
         socket.broadcast.emit('message', fullText)
+    })
+    socket.on('trash', async (evt) => {
+        await myModel.deleteOne({fileName: evt});
     })
 })
 io.on('disconnect', (evt) => {
