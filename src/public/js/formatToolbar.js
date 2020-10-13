@@ -41,6 +41,42 @@ FormatToolbar.prototype.init = function () {
         var s = new SpinButton(spinButtons[i], this);
         s.init();
     }
+	
+	socket.on('bold', (value) => {
+		this.setBold(toolbarItem, value);
+	})
+	
+	socket.on('underline', (value) => {
+		this.setUnderline(toolbarItem, value);
+	})
+	
+	socket.on('italic', (value) => {
+		this.setItalic(toolbarItem, value);
+	})
+	
+	socket.on('align', (value) => {
+		toolbarItem.value = value;
+		this.setAlignment(toolbarItem);
+	})
+	
+	socket.on('font', (value) => {
+		this.setFontFamily(value);
+	})
+	
+	socket.on('fontSize', (value) => {
+		this.changeFontSize(value);
+	})
+};
+
+FormatToolbar.prototype.setBold = function (toolbarItem, isBold) {
+    if (isBold) {
+		this.textarea.style.fontWeight = 'bold';
+        toolbarItem.setPressed();
+    }
+    else {
+		this.textarea.style.fontWeight = 'normal';
+        toolbarItem.resetPressed();
+    }
 };
 
 FormatToolbar.prototype.toggleBold = function (toolbarItem) {
@@ -54,6 +90,17 @@ FormatToolbar.prototype.toggleBold = function (toolbarItem) {
     }
 };
 
+FormatToolbar.prototype.setUnderline = function (toolbarItem, isUnderline) {
+    if (isUnderline) {
+		this.textarea.style.textDecoration = 'underline';
+        toolbarItem.setPressed();
+    }
+    else {
+        this.textarea.style.textDecoration = 'none';
+        toolbarItem.resetPressed();
+    }
+};
+
 FormatToolbar.prototype.toggleUnderline = function (toolbarItem) {
     if (toolbarItem.isPressed()) {
         this.textarea.style.textDecoration = 'none';
@@ -62,6 +109,17 @@ FormatToolbar.prototype.toggleUnderline = function (toolbarItem) {
     else {
         this.textarea.style.textDecoration = 'underline';
         toolbarItem.setPressed();
+    }
+};
+
+FormatToolbar.prototype.setItalic = function (toolbarItem, isItalic) {
+    if (isItalic) {
+		this.textarea.style.fontStyle = 'italic';
+        toolbarItem.setPressed(); 
+    }
+    else {
+		this.textarea.style.fontStyle = 'normal';
+        toolbarItem.resetPressed();
     }
 };
 
@@ -78,6 +136,7 @@ FormatToolbar.prototype.toggleItalic = function (toolbarItem) {
 
 FormatToolbar.prototype.changeFontSize = function (value) {
     this.textarea.style.fontSize = value + 'pt';
+	socket.emit('fontSize', value);
 };
 
 FormatToolbar.prototype.setAlignment = function (toolbarItem) {
@@ -123,15 +182,19 @@ FormatToolbar.prototype.activateItem = function (toolbarItem) {
             break;
         case 'underline':
             this.toggleUnderline(toolbarItem);
+            socket.emit('underline');
             break;
         case 'italic':
             this.toggleItalic(toolbarItem);
+            socket.emit('italic');
             break;
         case 'align':
             this.setAlignment(toolbarItem);
+			socket.emit('align', toolbarItem.value);
             break;
         case 'font-family':
             this.setFontFamily(toolbarItem.value);
+			socket.emit('font', toolbarItem.value);
             break;
         default:
             break;
