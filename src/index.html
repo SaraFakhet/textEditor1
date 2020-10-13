@@ -249,7 +249,7 @@
             document.getElementById("grid").innerHTML = "";
             docs.forEach((elt) => {
                 document.getElementById("grid").innerHTML +=
-                    "<div onclick=onClickLoad(\""+elt.fileName+"\")>" + '<img src="images/document.svg">' + "<p>" + elt.fileName + "</p></div>"
+                    "<div onclick=onClickLoad(\""+elt.fileName+"\")>" + '<img src="images/document.svg">' + "<p style='margin: 10px; font-family: sans-serif;'>" + elt.fileName + "</p></div>"
             })
         })
 
