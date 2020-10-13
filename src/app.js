@@ -21,7 +21,13 @@ var schema = mongoose.Schema({
     // underline: bool
     // italic: bool
 });
+var save = mongoose.Schema({
+    user: String,
+    buffer: String,
+    // timestamp
+});
 
+var mySave = mongoose.model("save", save, "myCollection");
 var myModel = mongoose.model("model", schema, "myCollection");
 
 /*end mongoose*/
@@ -44,6 +50,14 @@ io.on('connection', (socket) => {
         socket.emit('message', evt)
         socket.broadcast.emit('message', evt)
     })
+
+    socket.on('version', async (evt) => {
+        let version = new mySave({user: evt, buffer: fullText});
+        await version.save(function (err) {
+            if (err) return console.error(err);
+        })
+    })
+
     socket.on('bold', () => {
         socket.broadcast.emit('bold')
     })
