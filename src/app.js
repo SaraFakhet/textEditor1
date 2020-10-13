@@ -38,10 +38,10 @@ var fullText = ""
 
 server.listen(port, hostname, () => log(`Server running at http://${hostname}:${port}/`))
 io.on('connection', (socket) => {
-    log('connected')
-	socket.broadcast.emit('message', fullText)
+	socket.emit('message', fullText)
     socket.on('message', (evt) => {
-		fullText = evt
+        fullText = evt
+        socket.emit('message', evt)
         socket.broadcast.emit('message', evt)
     })
     socket.on('bold', () => {
@@ -56,8 +56,9 @@ io.on('connection', (socket) => {
     })
     socket.on('load', async (evt) => {
         let doc1 = await myModel.find({fileName: evt}).exec();
-        socket.emit('loadBuffer', doc1[0].buffer)
-        socket.broadcast.emit('loadBuffer', doc1[0].buffer)
+        fullText = doc1[0].buffer;
+        socket.emit('message', fullText)
+        socket.broadcast.emit('message', fullText)
     })
 })
 io.on('disconnect', (evt) => {
