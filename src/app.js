@@ -73,6 +73,10 @@ io.on('connection', (socket) => {
             await myModel.updateOne({fileName:evt},{ buffer: fullText});
         }
     })
+    socket.on('loadall', async () => {
+        let docs = await myModel.find({});
+        socket.emit('loadallnext', docs);
+    })
     socket.on('load', async (evt) => {
         let doc1 = await myModel.find({fileName: evt}).exec();
         fullText = doc1[0].buffer;
