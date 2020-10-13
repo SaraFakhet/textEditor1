@@ -66,15 +66,15 @@ io.on('connection', (socket) => {
 
     socket.on('bold', () => {
         bold = !bold
-        socket.broadcast.emit('bold');
+        socket.broadcast.emit('bold', bold);
     })
     socket.on('underline', () => {
         underline = !underline
-        socket.broadcast.emit('underline');
+        socket.broadcast.emit('underline', underline);
     })
     socket.on('italic', () => {
         italic = !italic
-        socket.broadcast.emit('italic');
+        socket.broadcast.emit('italic', italic);
     })
 
     socket.on('save', async (evt) => {
@@ -96,6 +96,13 @@ io.on('connection', (socket) => {
         bold = doc1[0].bold;
         underline = doc1[0].underline;
         italic = doc1[0].italic;
+        socket.emit('bold', bold);
+        socket.broadcast.emit('bold', bold);
+        socket.emit('underline', underline);
+        socket.broadcast.emit('underline', underline);
+        socket.emit('italic', italic);
+        socket.broadcast.emit('italic', italic);
+
         // send if true to front
         socket.emit('message', fullText)
         socket.broadcast.emit('message', fullText)
