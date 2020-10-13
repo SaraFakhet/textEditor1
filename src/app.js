@@ -51,7 +51,7 @@ var bold = false
 var underline = false
 var italic = false
 var align = 'left'
-var font = 'SANS-SERIF'
+var font = 'sans-serif'
 var fontSize = 14
 
 server.listen(port, hostname, () => log(`Server running at http://${hostname}:${port}/`))
