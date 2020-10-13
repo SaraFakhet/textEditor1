@@ -9,6 +9,15 @@ h1,
     font-family: sans-serif;
 }
 
+.loginTitle {
+    font-size: 32pt;
+    color:white;
+}
+
+.user {
+
+}
+
 textarea {
     width: 990px;
     padding: 0.25em;

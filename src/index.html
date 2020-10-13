@@ -19,7 +19,7 @@
     </div>
 
     <h1>Éditeur collaboratif</h1>
-
+    <h2></h2>
     <div class="format"
          role="toolbar"
          aria-label="Text Formatting"
@@ -200,6 +200,14 @@
         </div>
     </div>
 
+    <div class="bg-modal-login">
+            <form action="">
+                <div class="popupTitle loginTitle">Bienvenue !</div>
+                <input type="text" id="loginInput" placeholder="Pseudo">
+                <a href="#" id="loginButton" class="button">Valider</a>
+            </form>
+    </div>
+
     <script src="/socket.io/socket.io.js"></script>
     <script>
         var socket = io('http://localhost:3000');
@@ -261,6 +269,6 @@
     <script src="/js/fontToolbarItem.js"></script>
     <script src="/js/formatToolbar.js"></script>
     <script src="/js/spinButton.js"></script>
-
+    <script src="/js/user.js"></script>
 </body>
 </html>
