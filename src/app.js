@@ -20,9 +20,9 @@ var schema = mongoose.Schema({
         unique: true,
     },
     buffer: String,
-    // bold: bool
-    // underline: bool
-    // italic: bool
+    bold: Boolean,
+    underline: Boolean,
+    italic: Boolean
 });
 var save = mongoose.Schema({
     user: String,
@@ -44,6 +44,9 @@ const hostname = '127.0.0.1';
 const port = 3000;
 const log = console.log;
 var fullText = ""
+var bold = false
+var underline = false
+var italic = false
 
 server.listen(port, hostname, () => log(`Server running at http://${hostname}:${port}/`))
 io.on('connection', (socket) => {
@@ -62,12 +65,21 @@ io.on('connection', (socket) => {
     })
 
     socket.on('bold', () => {
+        bold = !bold
         socket.broadcast.emit('bold');
     })
+    socket.on('underline', () => {
+        underline = !underline
+        socket.broadcast.emit('underline');
+    })
+    socket.on('italic', () => {
+        italic = !italic
+        socket.broadcast.emit('italic');
+    })
+
     socket.on('save', async (evt) => {
-        // db => push fulltext, name, bold (bool), italic (bool), underline (bool)
         evt = evt.replace(' ', '_');
-        let doc1 = new myModel({fileName: evt, buffer: fullText});
+        let doc1 = new myModel({fileName: evt, buffer: fullText, bold: bold, underline: underline, italic: italic});
         try {
             await doc1.save();
         } catch (e) {
