@@ -277,12 +277,34 @@ textarea {
     width: 1000px;
     margin: auto;
     margin-top: 10px;
+    margin-bottom: 40px;
     border: 1px solid;
     border-radius: 5px;
-    height: 150px;
+    height: 350px;
 }
 
 .versio_grid {
     display: grid;
-    
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: minmax(60px, auto);
+    grid-column-gap: 20px;
+    grid-row-gap: 10px;
+    justify-content: center;
+    width: 900px;
+    margin: auto;
+}
+
+.buffer {
+    width: 250px;
+    border: 1px solid;
+    border-radius: 3px;
+    height: 250px;
+    overflow-wrap: anywhere;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.buffer_info {
+    font-family: sans-serif;
+    margin: 10px;
 }

@@ -174,11 +174,12 @@
     </div>
 
     <div class="versionning">
-        <div style="margin: inherit; font-family: sans-serif;">
+        <div style="margin: inherit; margin-bottom: 20px; font-family: sans-serif;">
             Dernière version des fichiers en base de données
         </div>
-        <div class="versio_grid">
-
+        <div style = "overflow: hidden; overflow-y: scroll; height: 280px;">
+            <div class="versio_grid" id="versio_grid">
+            </div>
         </div>
     </div>
     
@@ -240,8 +241,17 @@
         function getEl(id) {
             return document.getElementById(id)
         }
+
         var user = new User();
         user.init();
+
+        socket.emit('versioning');
+        socket.on('displaysaved', async (saved) => {
+            saved.forEach((file) => {
+                document.getElementById("versio_grid").innerHTML += "<div> <div class='buffer'>" + file.buffer + "</div><div class='buffer_info'>Modifié par :" + file.user + "Le : " + file.createdAt + "</div></div>";
+            })
+        })
+
         const editor = getEl("textarea1")
         editor.addEventListener("keyup", (evt) => {
             const text = editor.value
@@ -313,6 +323,7 @@
                     "<div onclick=onClickTrash(\""+elt.fileName+"\")>" + '<img src="images/document.svg">' + "<p style='margin: 10px; font-family: sans-serif;'>" + elt.fileName + "</p></div>"
             })
         })
+
     </script>
     <script src="/js/fontMenu.js"></script>
     <script src="/js/fontMenuButton.js"></script>

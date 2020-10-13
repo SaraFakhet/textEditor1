@@ -158,6 +158,11 @@ io.on('connection', (socket) => {
             }
         });
     })
+
+    socket.on('versioning', async () => {
+        let fileSaved = await mySave.find({});
+        socket.emit('displaysaved', fileSaved);
+    })
 })
 io.on('disconnect', (evt) => {
     log('some people left')
