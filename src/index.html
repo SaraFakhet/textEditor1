@@ -190,46 +190,17 @@
             <form action="" style="height: inherit;">
                 <div class="popupTitle" style="margin-bottom: 30px">Choisissez un fichier</div>
                 <div style="overflow: hidden; overflow-y: scroll; height: 360px;">
-                <div class="doc_grid">
-                    <div>
-                        <img src="images/document.svg">
-                        <p>First doc</p>
+                    <div class="doc_grid" id="grid">
+                        <script>
+                            socket.on('loadallnext', async (docs) => {
+                                docs.map((elt) => {
+                                    $("grid").append("<div>"+ '<img src="images/document.svg">' + "<p>" + elt.fileName + "</p>");
+                                })
+                            })
+                        </script>
                     </div>
-                    <div>
-                        <img src="images/document.svg">
-                        <p>Second doc</p>
-                    </div>
-                    <div>
-                        <img src="images/document.svg">
-                        <p>Third doc</p>
-                    </div>
-                    <div>
-                        <img src="images/document.svg">
-                        <p>Fourth doc</p>
-                    </div>
-                    <div>
-                        <img src="images/document.svg">
-                        <p>Fifth doc</p>
-                    </div>
-                    <div>
-                            <img src="images/document.svg">
-                            <p>Fifth doc</p>
-                        </div>
-                        <div>
-                                <img src="images/document.svg">
-                                <p>Fifth doc</p>
-                            </div>
-                            <div>
-                                    <img src="images/document.svg">
-                                    <p>Fifth doc</p>
-                                </div>
-                                <div>
-                                        <img src="images/document.svg">
-                                        <p>Fifth doc</p>
-                                    </div>
                 </div>
-            </div>
-              </form>
+            </form>
         </div>
     </div>
 
@@ -257,7 +228,7 @@
         const loadButton = document.getElementById('loadButton');
         loadButton.onclick = function() {
             document.querySelector('.bg-modal2').style.display = "flex";
-            socket.emit('load');
+            socket.emit('loadall');
         };
 
         document.querySelector('.close').addEventListener("click", function() {
