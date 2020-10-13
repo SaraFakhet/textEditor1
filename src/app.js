@@ -51,6 +51,9 @@ var italic = false
 server.listen(port, hostname, () => log(`Server running at http://${hostname}:${port}/`))
 io.on('connection', (socket) => {
 	socket.emit('message', fullText)
+    socket.emit('bold', bold);
+    socket.emit('underline', underline);
+    socket.emit('italic', italic);
     socket.on('message', (evt) => {
         fullText = evt
         socket.emit('message', evt)
