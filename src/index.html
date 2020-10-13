@@ -215,10 +215,9 @@
         });
 
         const submitSaveButton = document.getElementById('submitSaveButton');
-        var saveFileName = document.getElementById('submitSaveInput').value;
         submitSaveButton.onclick = function() {
             document.querySelector('.bg-modal').style.display = "none";
-            socket.emit('save', saveFileName); //FIXME
+            socket.emit('save', document.getElementById('submitSaveInput').value);
         };
         socket.on('loadBuffer', (buffer) => {
             editor.value = buffer
