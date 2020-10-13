@@ -102,7 +102,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('save', async (evt) => {
-        evt = evt.replace(' ', '_');
+        evt = evt.replaceAll(' ', '_');
         let doc1 = new myModel({fileName: evt, buffer: fullText, bold: bold, underline: underline, italic: italic, align: align, font: font, fontSize: fontSize});
         try {
             await doc1.save();
