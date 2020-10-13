@@ -171,8 +171,8 @@
 			rows="50"
 			cols="80"
 			placeholder="Ecrivez ici..."></textarea>
-	</div>
-
+    </div>
+    
     <div class="bg-modal">
         <div class="modal-contents">
             <div class="close">+</div>
@@ -180,6 +180,55 @@
                 <div class="popupTitle">Sauvegarder</div>
                 <input type="text" id="submitSaveInput" placeholder="Nom du fichier">
                 <a href="#" id="submitSaveButton" class="button">Valider</a>
+            </form>
+        </div>
+    </div>
+
+    <div class="bg-modal2">
+        <div class="modal-contentsbis">
+            <div class="close2">+</div>
+            <form action="" style="height: inherit;">
+                <div class="popupTitle" style="margin-bottom: 30px">Choisissez un fichier</div>
+                <div style="overflow: hidden; overflow-y: scroll; height: 360px;">
+                <div class="doc_grid">
+                    <div>
+                        <img src="images/document.svg">
+                        <p>First doc</p>
+                    </div>
+                    <div>
+                        <img src="images/document.svg">
+                        <p>Second doc</p>
+                    </div>
+                    <div>
+                        <img src="images/document.svg">
+                        <p>Third doc</p>
+                    </div>
+                    <div>
+                        <img src="images/document.svg">
+                        <p>Fourth doc</p>
+                    </div>
+                    <div>
+                        <img src="images/document.svg">
+                        <p>Fifth doc</p>
+                    </div>
+                    <div>
+                            <img src="images/document.svg">
+                            <p>Fifth doc</p>
+                        </div>
+                        <div>
+                                <img src="images/document.svg">
+                                <p>Fifth doc</p>
+                            </div>
+                            <div>
+                                    <img src="images/document.svg">
+                                    <p>Fifth doc</p>
+                                </div>
+                                <div>
+                                        <img src="images/document.svg">
+                                        <p>Fifth doc</p>
+                                    </div>
+                </div>
+            </div>
               </form>
         </div>
     </div>
@@ -207,11 +256,16 @@
 
         const loadButton = document.getElementById('loadButton');
         loadButton.onclick = function() {
-            socket.emit('load', 'TODO title');
+            document.querySelector('.bg-modal2').style.display = "flex";
+            socket.emit('load');
         };
 
         document.querySelector('.close').addEventListener("click", function() {
             document.querySelector('.bg-modal').style.display = "none";
+        });
+
+        document.querySelector('.close2').addEventListener("click", function() {
+            document.querySelector('.bg-modal2').style.display = "none";
         });
 
         const submitSaveButton = document.getElementById('submitSaveButton');
@@ -220,6 +274,8 @@
             document.querySelector('.bg-modal').style.display = "none";
             socket.emit('save', saveFileName); //FIXME
         };
+
+
         socket.on('loadBuffer', (buffer) => {
             editor.value = buffer
         });
