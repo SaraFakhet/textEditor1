@@ -93,6 +93,10 @@ io.on('connection', (socket) => {
     socket.on('load', async (evt) => {
         let doc1 = await myModel.find({fileName: evt}).exec();
         fullText = doc1[0].buffer;
+        bold = doc1[0].bold;
+        underline = doc1[0].underline;
+        italic = doc1[0].italic;
+        // send if true to front
         socket.emit('message', fullText)
         socket.broadcast.emit('message', fullText)
     })
