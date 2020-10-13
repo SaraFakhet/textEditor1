@@ -262,3 +262,18 @@ textarea {
     fill: #005a9c;
     border-color: #005a9c;
 }
+
+.versionning {
+    background: white;
+    width: 1000px;
+    margin: auto;
+    margin-top: 10px;
+    border: 1px solid;
+    border-radius: 5px;
+    height: 150px;
+}
+
+.versio_grid {
+    display: grid;
+    
+}
