@@ -133,7 +133,7 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('message', fullText)
     })
     socket.on('trash', async (evt) => {
-        myModel.deleteOne({fileName: evt});
+        await myModel.deleteOne({fileName: evt});
     })
 })
 io.on('disconnect', (evt) => {
