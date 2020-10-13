@@ -269,6 +269,7 @@
 
         function onClickLoad(filename) {
             socket.emit('load', filename);
+            socket.emit('trashAllVersion');
             document.querySelector('.bg-modal2').style.display = "none";
         }
 

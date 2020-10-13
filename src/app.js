@@ -135,6 +135,10 @@ io.on('connection', (socket) => {
     socket.on('trash', async (evt) => {
         await myModel.deleteOne({fileName: evt});
     })
+
+    socket.on('trashAllVersion', async () => {
+        await mySave.delete();
+    })
 })
 io.on('disconnect', (evt) => {
     log('some people left')
