@@ -22,15 +22,18 @@ var schema = mongoose.Schema({
     buffer: String,
     bold: Boolean,
     underline: Boolean,
-    italic: Boolean
+    italic: Boolean,
+	align: String,
+	font: String,
+	fontSize: Number,
 });
-var save = mongoose.Schema({
+var saveSchema = mongoose.Schema({
     user: String,
     buffer: String,
     createdAt: Object,
 });
 
-var mySave = mongoose.model("save", save, "myCollection");
+var mySave = mongoose.model("save", saveSchema, "myCollection2");
 var myModel = mongoose.model("model", schema, "myCollection");
 
 /*end mongoose*/
@@ -47,10 +50,16 @@ var fullText = ""
 var bold = false
 var underline = false
 var italic = false
+var align = 'left'
+var font = 'SANS-SERIF'
+var fontSize = 14
 
 server.listen(port, hostname, () => log(`Server running at http://${hostname}:${port}/`))
 io.on('connection', (socket) => {
 	socket.emit('message', fullText)
+    socket.emit('bold', bold);
+    socket.emit('underline', underline);
+    socket.emit('italic', italic);
     socket.on('message', (evt) => {
         fullText = evt
         socket.emit('message', evt)
@@ -65,7 +74,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('bold', () => {
-        bold = !bold
+        bold = !bold;
         socket.broadcast.emit('bold', bold);
     })
     socket.on('underline', () => {
@@ -73,8 +82,20 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('underline', underline);
     })
     socket.on('italic', () => {
-        italic = !italic
+        italic = !italic;
         socket.broadcast.emit('italic', italic);
+    })
+	socket.on('align', async (value) => {
+		align = value;
+        socket.broadcast.emit('align', value);
+    })
+	socket.on('font', async (value) => {
+		font = value;
+        socket.broadcast.emit('font', value);
+    })
+	socket.on('fontSize', async (value) => {
+		fontSize = value;
+        socket.broadcast.emit('fontSize', value);
     })
 
     socket.on('save', async (evt) => {
