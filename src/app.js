@@ -152,7 +152,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('trashAllVersion', async () => {
-        await mySave.delete();
+        //await mySave.delete();
     })
 })
 io.on('disconnect', (evt) => {
