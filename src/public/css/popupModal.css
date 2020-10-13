@@ -107,3 +107,55 @@ input {
     margin: 10px;
     font-family: sans-serif;
 }
+
+.bg-modal3 {
+    background-color: rgba(0, 0, 0, 0.8);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-contentsbisbis {
+    height: 420px;
+    width: 570px;
+    background-color: white;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+    border-radius: 4px;
+}
+
+.close3 {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    font-size: 42px;
+    color: #333;
+    transform: rotate(45deg);
+    cursor: pointer;
+}
+
+.close3:hover {
+    color: #666;
+}
+
+
+.doc_grid2 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(60px, auto);
+    grid-column-gap: 20px;
+    grid-row-gap: 10px;
+    justify-content: center;
+    width: 500px;
+    margin-left: 30px;
+}
+
+.p {
+    margin: 10px;
+    font-family: sans-serif;
+}

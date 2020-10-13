@@ -90,6 +90,10 @@ io.on('connection', (socket) => {
         let docs = await myModel.find({});
         socket.emit('loadallnext', docs);
     })
+    socket.on('trashall', async (evt) => {
+        let docs = await myModel.find({});
+        socket.emit('trashallnext', docs);
+    })
     socket.on('load', async (evt) => {
         let doc1 = await myModel.find({fileName: evt}).exec();
         fullText = doc1[0].buffer;
@@ -106,6 +110,9 @@ io.on('connection', (socket) => {
         // send if true to front
         socket.emit('message', fullText)
         socket.broadcast.emit('message', fullText)
+    })
+    socket.on('trash', async (evt) => {
+        myModel.deleteOne({fileName: evt});
     })
 })
 io.on('disconnect', (evt) => {

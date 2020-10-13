@@ -15,7 +15,7 @@
         <a class="active" href="#"><i class="fa fa-home"></i></a>
         <a href=javascript:void(0); id="loadButton"><i class="fa fa-search"></i></a>
         <a href=javascript:void(0); id="saveButton"><i class="fa fa-save"></i></a>
-        <a href="#"><i class="fa fa-trash"></i></a>
+        <a href=javascript:void(0); id="trashButton"><i class="fa fa-trash"></i></a>
     </div>
 
     <h1>Éditeur collaboratif</h1>
@@ -188,7 +188,7 @@
         <div class="modal-contentsbis">
             <div class="close2">+</div>
             <form action="" style="height: inherit;">
-                <div class="popupTitle" style="margin-bottom: 30px">Choisissez un fichier</div>
+                <div class="popupTitle" style="margin-bottom: 30px">Sélectionnez un fichier</div>
                 <div style="overflow: hidden; overflow-y: scroll; height: 360px;">
                     <div class="doc_grid" id="grid">
 
@@ -199,6 +199,22 @@
             </form>
         </div>
     </div>
+
+    <div class="bg-modal3">
+            <div class="modal-contentsbisbis">
+                <div class="close3">+</div>
+                <form action="" style="height: inherit;">
+                    <div class="popupTitle" style="margin-bottom: 30px">Choisissez un fichier à supprimer</div>
+                    <div style="overflow: hidden; overflow-y: scroll; height: 360px;">
+                        <div class="doc_grid2" id="grid2">
+    
+    
+    
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -226,12 +242,22 @@
             socket.emit('loadall');
         };
 
+        const trashButton = document.getElementById('trashButton');
+        trashButton.onclick = function() {
+            document.querySelector('.bg-modal3').style.display = "flex";
+            socket.emit('trashall');
+        }
+
         document.querySelector('.close').addEventListener("click", function() {
             document.querySelector('.bg-modal').style.display = "none";
         });
 
         document.querySelector('.close2').addEventListener("click", function() {
             document.querySelector('.bg-modal2').style.display = "none";
+        });
+
+        document.querySelector('.close3').addEventListener("click", function() {
+            document.querySelector('.bg-modal3').style.display = "none";
         });
 
         const submitSaveButton = document.getElementById('submitSaveButton');
@@ -245,11 +271,22 @@
             document.querySelector('.bg-modal2').style.display = "none";
         }
 
+        function onClickTrash(filename) {
+            socket.emit('trash', filename);
+            document.querySelector('.bg-modal3').style.display = "none";
+        }
+
         socket.on('loadallnext', async (docs) => {
-            document.getElementById("grid").innerHTML = "";
             docs.forEach((elt) => {
-                document.getElementById("grid").innerHTML +=
+                document.getElementById("grid").innerHTML =
                     "<div onclick=onClickLoad(\""+elt.fileName+"\")>" + '<img src="images/document.svg">' + "<p style='margin: 10px; font-family: sans-serif;'>" + elt.fileName + "</p></div>"
+            })
+        })
+
+        socket.on('trashallnext', async (docs) => {
+            docs.forEach((elt) => {
+                document.getElementById("grid2").innerHTML =
+                    "<div onclick=onClickTrash(\""+elt.fileName+"\")>" + '<img src="images/document.svg">' + "<p style='margin: 10px; font-family: sans-serif;'>" + elt.fileName + "</p></div>"
             })
         })
 
