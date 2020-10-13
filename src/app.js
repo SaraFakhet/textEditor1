@@ -26,7 +26,7 @@ var myModel = mongoose.model("model", schema, "myCollection");
 
 /*end mongoose*/
 
-app.use(express.static(__dirname + '../node_modules'));
+app.use('/', express.static(__dirname + '/public/'));
 app.get('/', function(req, res,next) {  
     res.sendFile(__dirname + '/index.html');
 });

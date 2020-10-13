@@ -1,1029 +1,212 @@
 <!DOCTYPE html>
 <html>
+<head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-<style>
-body {margin:0;}
-
-.icon-bar {
-  width: 100%;
-  background-color: #555;
-  overflow: auto;
-}
-
-.icon-bar a {
-  float: left;
-  width: 25%;
-  text-align: center;
-  padding: 12px 0;
-  transition: all 0.3s ease;
-  color: white;
-  font-size: 36px;
-}
-
-.icon-bar a:hover {
-  background-color: #000;
-}
-
-.active {
-  background-color: #4CAF50;
-}
-
-[role='toolbar'] .menu-popup {
-  position: relative;
-}
-
-[role='toolbar'] .menu-popup [role="menu"] {
-  padding: 0;
-  width: 9.5em;
-  border: 2px solid #ddd;
-  border-radius: 5px;
-  background-color: white;
-  display: none;
-  position: absolute;
-  margin: 0;
-  z-index: 1;
-}
-
-[role='toolbar'] .menu-popup [role="menu"].focus {
-  border-color: #005a9c;
-}
-
-[role='toolbar'] .menu-popup [role="menu"] li {
-  padding: 0;
-  margin: 0;
-  display: block;
-  text-align: left;
-  list-style: none;
-}
-
-[role='toolbar'] .menu-popup [role="menu"] [role="menuitemradio"] {
-  padding: 0;
-  padding-top: 1px;
-  padding-bottom: 1px;
-  padding-left: 2px;
-  padding-right: 2px;
-  outline: 0;
-  border: none;
-  border-radius: 0;
-}
-
-[role='toolbar'] .menu-popup [role="menu"] [role="menuitemradio"]:focus,
-[role='toolbar'] .menu-popup [role="menu"] [role="menuitemradio"]:hover {
-  background: rgb(226, 239, 255);
-  border-top: 1px solid #005a9c;
-  border-bottom: 1px solid #005a9c;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-[role='toolbar'] .menu-popup [role="menu"] [role="menuitemradio"]:focus {
-  border-color: #005a9c;
-}
-
-[role="toolbar"] {
-  border: 2px solid transparent;
-  border-radius: 5px;
-  padding: 6px;
-  height: 44px;
-  width: 1000px;
-  background-color: #ececea;
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-
-[role="toolbar"].focus {
-  border-color: #005a9c;
-  border-width: 3px;
-  padding: 5px;
-}
-
-[role="toolbar"] .group {
-  padding: 0.25em;
-  display: block;
-  float: left;
-}
-
-[role="toolbar"] .group:not(:first-child) {
-  margin-left: 0.75em;
-}
-
-[role="toolbar"] button,
-[role="toolbar"] [role="radio"],
-[role="toolbar"] label,
-[role="toolbar"] .spinbutton,
-[role="toolbar"] a,
-[role="toolbar"] .input {
-  border: 1px solid rgb(255, 255, 255);
-  outline: none;
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 5px;
-  text-align: center;
-  background: rgb(255, 255, 255);
-  color: #222428;
-  font-size: 14px;
-  line-height: 1.5em;
-  margin-right: 0.25em;
-}
-
-[role="toolbar"] button.popup {
-  position: relative;
-}
-
-[role="toolbar"] button .popup-label {
-  display: block;
-  width: initial;
-  border: 1px solid white;
-  padding: 2px 4px;
-  border-radius: 5px;
-  position: absolute;
-  top: -30000em;
-  background-color: black;
-  color: white;
-  font-weight: normal;
-}
-
-[role="toolbar"] button .popup-label.show {
-  text-align: center;
-  top: -2.5em;
-}
-
-[role="toolbar"] button .popup-label::after,
-[role="toolbar"] button .popup-label::before {
-  top: 100%;
-  left: 50%;
-  border: solid transparent;
-  content: " ";
-  height: 0;
-  width: 0;
-  position: absolute;
-  pointer-events: none;
-}
-
-[role="toolbar"] button .popup-label::after {
-  border-color: rgba(0, 0, 0, 0);
-  border-top-color: #000;
-  border-width: 10px;
-  margin-left: -10px;
-}
-
-[role="toolbar"] button .popup-label::before {
-  border-color: rgba(255, 255, 255, 0);
-  border-top-color: #fff;
-  border-width: 12px;
-  margin-left: -12px;
-}
-
-[role="toolbar"] button[aria-pressed="true"],
-[role="toolbar"] [role="radio"][aria-checked="true"] {
-  border-color: #555;
-  font-weight: bold;
-  background-color: #f4f4f4;
-}
-
-[role="toolbar"] button[aria-disabled="true"] {
-  color: #889;
-  cursor: not-allowed;
-}
-
-[role="toolbar"] button[aria-disabled="true"]:focus {
-  border-color: #005a9c;
-}
-
-[role="toolbar"] button::-moz-focus-inner {
-  border: 0;
-}
-
-[role="toolbar"] button:focus,
-[role="toolbar"] [role="radio"]:focus,
-[role="toolbar"] .spinbutton:focus,
-[role="toolbar"] .focus,
-[role="toolbar"] a:focus {
-  border-width: 2px;
-  border-color: #005a9c;
-  background: rgb(226, 239, 255);
-  padding: 5px 11px;
-}
-
-[role="toolbar"] button:hover,
-[role="toolbar"] [role="radio"]:hover,
-[role="toolbar"] .spinbutton:hover,
-[role="toolbar"] label.input:hover,
-[role="toolbar"] a:hover {
-  border-color: #005a9c;
-  background: rgb(226, 239, 255);
-}
-
-[role="toolbar"] [role="spinbutton"] .value,
-[role="toolbar"] [role="spinbutton"] .increase,
-[role="toolbar"] [role="spinbutton"] .decrease {
-  width: 60px;
-  display: inline-block;
-  padding: 0;
-  margin: 0;
-}
-
-[role="toolbar"] button[aria-haspopup] span {
-  float: right;
-}
-
-[role="toolbar"] [role="spinbutton"] .increase,
-[role="toolbar"] [role="spinbutton"] .decrease {
-  width: 20px;
-  border: 1px solid #ececea;
-  border-radius: 3px;
-  background-color: #ececea;
-}
-
-[role="toolbar"] [role="spinbutton"] .increase:hover,
-[role="toolbar"] [role="spinbutton"] .decrease:hover,
-[role="toolbar"] [role="spinbutton"]:focus .increase,
-[role="toolbar"] [role="spinbutton"]:focus .decrease {
-  fill: #005a9c;
-  border-color: #005a9c;
-}
-
-textarea {
-  width: 990px;
-  padding: 0.25em;
-  border: 2px solid black;
-  height: 400px;
-  font-size: 14pt;
-  font-family: sans-serif;
-  border-radius: 5px;
-}
-</style>
-
-<script type="text/javascript">
-/*
-*   File:   SpinButton.js
-*/
-
-// Create SpinButton that contains value, valuemin, valuemax, and valuenow
-var SpinButton = function (domNode, toolbar)  {
-  this.domNode = domNode;
-  this.toolbar = toolbar;
-  this.valueDomNode = domNode.querySelector('.value');
-  this.increaseDomNode = domNode.querySelector('.increase');
-  this.decreaseDomNode = domNode.querySelector('.decrease');
-  this.valueMin  = 8;
-  this.valueMax  = 40;
-  this.valueNow  = 12;
-  this.valueText = this.valueNow + ' pt';
-};
-
-// Initialize slider
-SpinButton.prototype.init = function () {
-
-  if (this.domNode.getAttribute('aria-valuemin')) {
-    this.valueMin = parseInt((this.domNode.getAttribute('aria-valuemin')));
-  }
-  if (this.domNode.getAttribute('aria-valuemax')) {
-    this.valueMax = parseInt((this.domNode.getAttribute('aria-valuemax')));
-  }
-  if (this.domNode.getAttribute('aria-valuenow')) {
-    this.valueNow = parseInt((this.domNode.getAttribute('aria-valuenow')));
-  }
-  
-  this.setValue(this.valueNow);
-  this.increaseDomNode.addEventListener('click', this.handleIncreaseClick.bind(this));
-  this.decreaseDomNode.addEventListener('click', this.handleDecreaseClick.bind(this));
-
-};
-
-SpinButton.prototype.setValue = function (value) {
-  if (value > this.valueMax) {
-    value = this.valueMax;
-  }
-  if (value < this.valueMin) {
-    value = this.valueMin;
-  }
-
-  this.valueNow  = value;
-  this.valueText = value + ' pt';
-
-  if (this.valueDomNode) {
-    this.valueDomNode.innerHTML = this.valueText;
-  }
-  this.toolbar.changeFontSize(value);
-};
-
-SpinButton.prototype.handleIncreaseClick = function (event) {
-  this.setValue(this.valueNow + 1);
-  event.preventDefault();
-  event.stopPropagation();
-};
-
-SpinButton.prototype.handleDecreaseClick = function (event) {
-  this.setValue(this.valueNow - 1);
-  event.preventDefault();
-  event.stopPropagation();
-};
-
-/*
-*   File:   FontMenuButton.js
-*/
-
-
-FontMenuButton = function (node, toolbar, toolbarItem) {
-  this.domNode = node;
-  this.fontMenu = false;
-  this.toolbar = toolbar;
-  this.toolbarItem = toolbarItem;
-
-  this.buttonAction = 'font-family';
-  this.value = '';
-};
-
-FontMenuButton.prototype.init = function () {
-  var id = this.domNode.getAttribute('aria-controls');
-
-  if (id) {
-    var node = document.getElementById(id);
-    if (node) {
-      this.fontMenu = new FontMenu(node, this);
-      this.fontMenu.init();
-    }
-  }
-  this.domNode.addEventListener('click', this.handleClick.bind(this));
-};
-
-FontMenuButton.prototype.handleClick = function (event, menuButton) {
-  if (this.fontMenu.isOpen()) {
-    this.fontMenu.close();
-  }
-  else {
-    this.fontMenu.open();
-  }
-};
-
-FontMenuButton.prototype.setFontFamily = function (font) {
-  this.value = font;
-  this.domNode.innerHTML = font.toUpperCase() + '<span></span>';
-  this.domNode.style.fontFamily = font;
-  this.domNode.setAttribute('aria-label', 'Font: ' + font);
-  this.toolbar.activateItem(this);
-};
-
-/*
-*   File:   FontMenuItem.js
-*/
-
-var FontMenuItem = function (domNode, fontMenu) {
-  this.domNode   = domNode;
-  this.fontMenu = fontMenu;
-  this.font     = '';
-};
-
-FontMenuItem.prototype.init = function () {
-  this.domNode.setAttribute('tabindex', '-1');
-
-  if (!this.domNode.getAttribute('role')) {
-    this.domNode.setAttribute('role', 'menuitemradio');
-  }
-
-  this.font = this.domNode.textContent.trim().toLowerCase();
-  this.domNode.addEventListener('click',      this.handleClick.bind(this));
-  this.domNode.addEventListener('mouseover',  this.handleMouseover.bind(this));
-  this.domNode.addEventListener('mouseout',   this.handleMouseout.bind(this));
-};
-
-/* EVENT HANDLERS */
-
-FontMenuItem.prototype.handleClick = function (event) {
-  this.fontMenu.setFontFamily(this, this.font);
-  this.fontMenu.setFocusToFirstItem();
-  this.fontMenu.close(true);
-};
-
-FontMenuItem.prototype.handleMouseover = function (event) {
-  this.fontMenu.hasHover = true;
-  this.fontMenu.open();
-};
-
-FontMenuItem.prototype.handleMouseout = function (event) {
-  this.fontMenu.hasHover = false;
-  setTimeout(this.fontMenu.close.bind(this.fontMenu, false), 300);
-};
-
-/*
-*   File:   FormatToolbar.js
-*/
-
-FormatToolbar = function (domNode) {
-  this.domNode = domNode;
-  this.firstItem = null;
-  this.lastItem = null;
-
-  this.toolbarItems = [];
-  this.alignItems = [];
-  this.textarea = null;
-
-  this.start = null;
-  this.end = null;
-  this.ourClipboard = '';
-  this.selected = null;
-};
-
-FormatToolbar.prototype.init = function () {
-  var i, items, toolbarItem, menuButton;
-
-  this.textarea = document.getElementById(this.domNode.getAttribute('aria-controls'));
-
-  items = this.domNode.querySelectorAll('.item');
-
-  for (i = 0; i < items.length; i++) {
-    toolbarItem = new FormatToolbarItem(items[i], this);
-    toolbarItem.init();
-
-    if (items[i].hasAttribute('aria-haspopup')) {
-      menuButton = new FontMenuButton(items[i], this, toolbarItem);
-      menuButton.init();
-    }
-
-    if (i === 0) {
-      this.firstItem = toolbarItem;
-    }
-    this.lastItem = toolbarItem;
-    this.toolbarItems.push(toolbarItem);
-  }
-
-  var spinButtons = this.domNode.querySelectorAll('[role=spinbutton]');;
-  for (var i = 0; i < spinButtons.length; i++) {
-    var s = new SpinButton(spinButtons[i], this);
-    s.init();
-  }
-};
-
-FormatToolbar.prototype.toggleBold = function (toolbarItem) {
-  if (toolbarItem.isPressed()) {
-    this.textarea.style.fontWeight = 'normal';
-    toolbarItem.resetPressed();
-  }
-  else {
-    this.textarea.style.fontWeight = 'bold';
-    toolbarItem.setPressed();
-  }
-};
-
-FormatToolbar.prototype.toggleUnderline = function (toolbarItem) {
-  if (toolbarItem.isPressed()) {
-    this.textarea.style.textDecoration = 'none';
-    toolbarItem.resetPressed();
-  }
-  else {
-    this.textarea.style.textDecoration = 'underline';
-    toolbarItem.setPressed();
-  }
-};
-
-FormatToolbar.prototype.toggleItalic = function (toolbarItem) {
-  if (toolbarItem.isPressed()) {
-    this.textarea.style.fontStyle = 'normal';
-    toolbarItem.resetPressed();
-  }
-  else {
-    this.textarea.style.fontStyle = 'italic';
-    toolbarItem.setPressed();
-  }
-};
-
-FormatToolbar.prototype.changeFontSize = function (value) {
-  this.textarea.style.fontSize = value + 'pt';
-};
-
-FormatToolbar.prototype.setAlignment = function (toolbarItem) {
-  for (var i = 0; i < this.alignItems.length; i++) {
-    this.alignItems[i].resetChecked();
-  }
-  switch (toolbarItem.value) {
-    case 'left':
-      this.textarea.style.textAlign = 'left';
-      toolbarItem.setChecked();
-      break;
-    case 'center':
-      this.textarea.style.textAlign = 'center';
-      toolbarItem.setChecked();
-      break;
-    case 'right':
-      this.textarea.style.textAlign = 'right';
-      toolbarItem.setChecked();
-      break;
-
-    default:
-      break;
-  }
-};
-
-FormatToolbar.prototype.setFocusToFirstAlignItem = function () {
-  this.setFocusItem(this.alignItems[0]);
-};
-
-FormatToolbar.prototype.setFocusToLastAlignItem = function () {
-  this.setFocusItem(this.alignItems[2]);
-};
-
-FormatToolbar.prototype.setFontFamily = function (font) {
-  this.textarea.style.fontFamily = font;
-};
-
-FormatToolbar.prototype.activateItem = function (toolbarItem) {
-  switch (toolbarItem.buttonAction) {
-    case 'bold':
-      this.toggleBold(toolbarItem);
-      break;
-    case 'underline':
-      this.toggleUnderline(toolbarItem);
-      break;
-    case 'italic':
-      this.toggleItalic(toolbarItem);
-      break;
-    case 'align':
-      this.setAlignment(toolbarItem);
-      break;
-    case 'font-family':
-      this.setFontFamily(toolbarItem.value);
-      break;
-    default:
-      break;
-  }
-};
-
-FormatToolbar.prototype.setFocusItem = function (item) {
-  for (var i = 0; i < this.toolbarItems.length; i++) {
-    this.toolbarItems[i].domNode.setAttribute('tabindex', '-1');
-  }
-  item.domNode.setAttribute('tabindex', '0');
-  item.domNode.focus();
-};
-
-FormatToolbar.prototype.hidePopupLabels = function () {
-  var tps = this.domNode.querySelectorAll('button .popup-label');
-  tps.forEach(function (tp) {tp.classList.remove('show');});
-};
-
-window.addEventListener('load', function () {
-  var toolbars = document.querySelectorAll('[role="toolbar"].format');
-  for (var i = 0; i < toolbars.length; i++) {
-    var toolbar = new FormatToolbar(toolbars[i]);
-    toolbar.init();
-  }
-});
-
-/*
-*   File:   FontToolbarItem.js
-*/
-
-FormatToolbarItem = function (domNode, toolbar) {
-  this.domNode = domNode;
-  this.toolbar = toolbar;
-  this.buttonAction = '';
-  this.value = '';
-  this.popupLabelNode = null;
-  this.hasHover = false;
-  this.popupLabelDelay = 800;
-};
-
-FormatToolbarItem.prototype.init = function () {
-  this.domNode.addEventListener('click', this.handleClick.bind(this));
-  this.domNode.addEventListener('mouseover', this.handleMouseOver.bind(this));
-  this.domNode.addEventListener('mouseleave', this.handleMouseLeave.bind(this));
-
-  if (this.domNode.classList.contains('bold')) {
-    this.buttonAction = 'bold';
-  }
-  if (this.domNode.classList.contains('italic')) {
-    this.buttonAction = 'italic';
-  }
-  if (this.domNode.classList.contains('underline')) {
-    this.buttonAction = 'underline';
-  }
-  if (this.domNode.classList.contains('align-left')) {
-    this.buttonAction = 'align';
-    this.value = 'left';
-    this.toolbar.alignItems.push(this);
-  }
-  if (this.domNode.classList.contains('align-center')) {
-    this.buttonAction = 'align';
-    this.value = 'center';
-    this.toolbar.alignItems.push(this);
-  }
-  if (this.domNode.classList.contains('align-right')) {
-    this.buttonAction = 'align';
-    this.value = 'right';
-    this.toolbar.alignItems.push(this);
-  }
-  if (this.domNode.classList.contains('spinbutton')) {
-    this.buttonAction = 'changeFontSize';
-  }
-
-  this.popupLabelNode = this.domNode.querySelector('.popup-label');
-  if (this.popupLabelNode) {
-    var width = 8 * this.popupLabelNode.textContent.length;
-    this.popupLabelNode.style.width = width + 'px';
-    this.popupLabelNode.style.left = -1 * ((width - this.domNode.offsetWidth) / 2) - 5 + 'px';
-  }
-};
-
-FormatToolbarItem.prototype.isPressed = function () {
-  return this.domNode.getAttribute('aria-pressed')  === 'true';
-};
-
-FormatToolbarItem.prototype.setPressed = function () {
-  this.domNode.setAttribute('aria-pressed', 'true');
-};
-
-FormatToolbarItem.prototype.resetPressed = function () {
-  this.domNode.setAttribute('aria-pressed', 'false');
-};
-
-FormatToolbarItem.prototype.setChecked = function () {
-  this.domNode.setAttribute('aria-checked', 'true');
-  this.domNode.checked = true;
-};
-
-FormatToolbarItem.prototype.resetChecked = function () {
-  this.domNode.setAttribute('aria-checked', 'false');
-  this.domNode.checked = false;
-};
-
-FormatToolbarItem.prototype.disable = function () {
-  this.domNode.setAttribute('aria-disabled', 'true');
-};
-
-FormatToolbarItem.prototype.enable = function () {
-  this.domNode.removeAttribute('aria-disabled');
-};
-
-FormatToolbarItem.prototype.showPopupLabel = function () {
-  if (this.popupLabelNode) {
-    this.toolbar.hidePopupLabels();
-    this.popupLabelNode.classList.add('show');
-  }
-};
-
-FormatToolbarItem.prototype.hidePopupLabel = function () {
-  if (this.popupLabelNode && !this.hasHover) {
-    this.popupLabelNode.classList.remove('show');
-  }
-};
-
-FormatToolbarItem.prototype.handleMouseLeave = function (event) {
-  this.hasHover = false;
-  setTimeout(this.hidePopupLabel.bind(this), this.popupLabelDelay);
-};
-
-FormatToolbarItem.prototype.handleMouseOver = function (event) {
-  this.showPopupLabel();
-  this.hasHover = true;
-};
-
-FormatToolbarItem.prototype.handleClick = function (e) {
-  if (this.buttonAction == 'link') 
-    return;
-  this.toolbar.setFocusItem(this);
-  this.toolbar.activateItem(this);
-};
-
-/*
-*   File:   FontMenu.js
-*/
-
-var FontMenu = function (domNode, controllerObj) {
-  var elementChildren,
-    msgPrefix = 'FontMenu constructor argument domNode ';
-
-  var childElement = domNode.firstElementChild;
-
-  while (childElement) {
-    var menuitem = childElement.firstElementChild;
-    childElement = childElement.nextElementSibling;
-  }
-
-  this.domNode = domNode;
-  this.controller = controllerObj;
-
-  this.menuitems = [];      // See PopupMenu init method
-  this.firstChars = [];      // See PopupMenu init method
-
-  this.firstItem = null;    // See PopupMenu init method
-  this.lastItem = null;    // See PopupMenu init method
-
-  this.hasFocus = false;   // See MenuItem handleFocus, handleBlur
-  this.hasHover = false;   // See PopupMenu handleMouseover, handleMouseout
-};
-
-
-FontMenu.prototype.init = function () {
-  var menuitemElements, menuitemElement, menuItem, textContent, numItems;
-
-  // Configure the domNode itself
-  this.domNode.setAttribute('tabindex', '-1');
-
-  this.domNode.addEventListener('mouseover', this.handleMouseover.bind(this));
-  this.domNode.addEventListener('mouseout', this.handleMouseout.bind(this));
-
-  // Traverse the element children of domNode: configure each with
-  // menuitem role behavior and store reference in menuitems array.
-  var menuitemElements = this.domNode.querySelectorAll('[role="menuitemradio"]');
-
-  for (var i = 0; i < menuitemElements.length; i++) {
-    menuitemElement = menuitemElements[i];
-    menuItem = new FontMenuItem(menuitemElement, this);
-    menuItem.init();
-    this.menuitems.push(menuItem);
-    textContent = menuitemElement.textContent.trim();
-    this.firstChars.push(textContent.substring(0, 1).toLowerCase());
-  }
-
-  // Use populated menuitems array to initialize firstItem and lastItem.
-  numItems = this.menuitems.length;
-  if (numItems > 0) {
-    this.firstItem = this.menuitems[0];
-    this.lastItem = this.menuitems[numItems - 1];
-  }
-};
-
-FontMenu.prototype.handleMouseover = function (event) {
-  this.hasHover = true;
-};
-
-FontMenu.prototype.handleMouseout = function (event) {
-  this.hasHover = false;
-  setTimeout(this.close.bind(this, false), 300);
-};
-
-FontMenu.prototype.setFontFamily = function (menuitem, font) {
-  for (var i = 0; i < this.menuitems.length; i++) {
-    var mi = this.menuitems[i];
-    mi.domNode.setAttribute('aria-checked', mi === menuitem);
-  }
-  this.controller.setFontFamily(font);
-};
-
-FontMenu.prototype.setFocusToFirstItem = function () {
-  this.firstItem.domNode.focus();
-};
-
-FontMenu.prototype.setFocusToCheckedItem = function () {
-  for (var index = 0; index < this.menuitems.length; index++) {
-    if (this.menuitems[index].domNode.getAttribute('aria-checked') === 'true') {
-      this.menuitems[index].domNode.focus();
-    }
-  }
-};
-
-FontMenu.prototype.setFocus = function () {
-  this.hasFocus = true;
-  this.domNode.classList.add('focus');
-  this.controller.toolbar.domNode.classList.add('focus');
-};
-
-FontMenu.prototype.removeFocus = function () {
-  this.hasFocus = false;
-  this.domNode.classList.remove('focus');
-  this.controller.toolbar.domNode.classList.remove('focus');
-  setTimeout(this.close.bind(this, false), 300);
-};
-
-/* MENU DISPLAY METHODS */
-
-FontMenu.prototype.isOpen = function () {
-  return this.controller.domNode.getAttribute('aria-expanded') === 'true';
-};
-
-FontMenu.prototype.open = function () {
-  // Get bounding rectangle of controller object's DOM node
-  var rect = this.controller.domNode.getBoundingClientRect();
-
-  // Set CSS properties
-  this.domNode.style.display = 'block';
-  this.domNode.style.position = 'absolute';
-  this.domNode.style.top = (rect.height - 1) + 'px';
-  this.domNode.style.left = '0px';
-  this.domNode.style.zIndex = 100;
-
-  // Set aria-expanded attribute
-  this.controller.domNode.setAttribute('aria-expanded', 'true');
-};
-
-FontMenu.prototype.close = function (force) {
-  if (typeof force !== 'boolean') {
-    force = false;
-  }
-
-  if (force || (!this.hasFocus && !this.hasHover && !this.controller.hasHover)) {
-    this.domNode.style.display = 'none';
-    this.controller.domNode.removeAttribute('aria-expanded');
-  }
-};
-</script>
-
-
-<body>
-	<div class="icon-bar">
-		<a class="active" href="#"><i class="fa fa-home"></i></a> 
-		<a href=javascript:void(0); id="loadButton"><i class="fa fa-search"></i></a>
-		<a href=javascript:void(0); id="saveButton"><i class="fa fa-save"></i></a>
-		<a href="#"><i class="fa fa-trash"></i></a>
-	</div>
-</body>
-
-
-<h3 style="font-family: Georgia, 'Times New Roman', Times, serif;">Editeur collaboratif</h3>
-
-<div class="format"
-     role="toolbar"
-     aria-label="Text Formatting"
-     aria-controls="textarea1">
-  <div class="group characteristics">
-    <button class="item bold popup"
-            aria-pressed="false"
-            value="bold"
-            tabindex="0">
-      <span class="fa fa-bold" aria-hidden="true"></span>
-      <span class="popup-label">
-        Bold
-      </span>
-    </button>
-    <button class="item italic popup"
-            aria-pressed="false"
-            value="italic"
-            tabindex="-1">
-      <span class="fa fa-italic" aria-hidden="true"></span>
-      <span class="popup-label">
-        Italic
-      </span>
-    </button>
-    <button class="item underline popup"
-            aria-pressed="false"
-            value="underline"
-            tabindex="-1">
-      <span class="fa fa-underline" aria-hidden="true"></span>
-      <span class="popup-label">
-        Underline
-      </span>
-    </button>
-  </div>
-  <div class="group"
-       role="radiogroup"
-       aria-label="Text Alignment">
-    <button role="radio"
-            class="item align-left popup"
-            aria-checked="true"
-            tabindex="-1">
-      <span class="fa fa-align-left" aria-hidden="true"></span>
-      <span class="popup-label">
-        Text Align Left
-      </span>
-    </button>
-    <button role="radio"
-            class="item align-center popup"
-            aria-checked="false"
-            tabindex="-1">
-      <span class="fa fa-align-center" aria-hidden="true"></span>
-      <span class="popup-label">
-        Text Align Center
-      </span>
-    </button>
-    <button role="radio"
-            class="item align-right popup"
-            aria-checked="false"
-            tabindex="-1">
-      <span class="fa fa-align-right" aria-hidden="true"></span>
-      <span class="popup-label">
-        Text Align Right
-      </span>
-    </button>
-  </div>
-  <div class="menu-popup group">
-    <button aria-haspopup="true"
-            aria-controls="menu1"
-            class="item menu-button"
-            tabindex="-1"
-            aria-label="Font: Sans-serif"
-            style="text-align: left; width: 140px; font-family: sans-serif">
-      SANS-SERIF
-      <span class="decrease">
-        <svg xmlns="http://www.w3.org/2000/svg"
-             width="12"
-             height="12">
-          <polygon class="decrease"
-                   fill="#333"
-                   points="0,2 11,2 6,12"></polygon>
-        </svg>
-      </span>
-    </button>
-    <ul role="menu"
-        id="menu1"
-        aria-label="Font Family">
-      <li role="menuitemradio"
-          aria-checked="true"
-          style="font-family: sans-serif">
-        Sans-serif
-      </li>
-      <li role="menuitemradio"
-          aria-checked="false"
-          style="font-family: serif">
-        Serif
-      </li>
-      <li role="menuitemradio"
-          aria-checked="false"
-          style="font-family: monospace">
-        Monospace
-      </li>
-      <li role="menuitemradio"
-          aria-checked="false"
-          style="font-family: fantasy">
-        Fantasy
-      </li>
-      <li role="menuitemradio"
-          aria-checked="false"
-          style="font-family: cursive">
-        Cursive
-      </li>
-    </ul>
-  </div>
-  <div class="group">
-    <div class="item spinbutton"
-         role="spinbutton"
-         tabindex="-1"
-         aria-valuenow="14"
-         aria-valuetext="14pt"
-         aria-valuemin="8"
-         aria-valuemax="40"
-         aria-label="Font size in points">
-      <span class="value">
-        14pt
-      </span>
-      <span class="increase">
-        <svg xmlns="http://www.w3.org/2000/svg"
-             width="12"
-             height="12">
-          <polygon class="increase"
-                   fill="#333"
-                   points="0,12 11,12 6,2"></polygon>
-        </svg>
-      </span>
-      <span class="decrease">
-        <svg xmlns="http://www.w3.org/2000/svg"
-             width="12"
-             height="12">
-          <polygon class="decrease"
-                   fill="#333"
-                   points="0,2 11,2 6,12"></polygon>
-        </svg>
-      </span>
-    </div>
-  </div>
-</div>
-<br>
+<link rel="stylesheet" type="text/css" href="/css/style.css">
 
 
 <title>Editeur collaboratif</title>
-<body style="text-align:center;background-color:#dfe0e1">
-	<div>
+</head>
+
+<body>
+    <div class="icon-bar">
+        <a class="active" href="#"><i class="fa fa-home"></i></a>
+        <a href=javascript:void(0); id="loadButton"><i class="fa fa-search"></i></a>
+        <a href=javascript:void(0); id="saveButton"><i class="fa fa-save"></i></a>
+        <a href="#"><i class="fa fa-trash"></i></a>
+    </div>
+
+    <h1>Éditeur collaboratif</h1>
+
+    <div class="format"
+         role="toolbar"
+         aria-label="Text Formatting"
+         aria-controls="textarea1">
+        <div class="group characteristics">
+            <button class="item bold popup"
+                    aria-pressed="false"
+                    value="bold"
+                    tabindex="0">
+                <span class="fa fa-bold" aria-hidden="true"></span>
+                <span class="popup-label">
+            Bold
+          </span>
+            </button>
+            <button class="item italic popup"
+                    aria-pressed="false"
+                    value="italic"
+                    tabindex="-1">
+                <span class="fa fa-italic" aria-hidden="true"></span>
+                <span class="popup-label">
+            Italic
+          </span>
+            </button>
+            <button class="item underline popup"
+                    aria-pressed="false"
+                    value="underline"
+                    tabindex="-1">
+                <span class="fa fa-underline" aria-hidden="true"></span>
+                <span class="popup-label">
+            Underline
+          </span>
+            </button>
+        </div>
+        <div class="group"
+             role="radiogroup"
+             aria-label="Text Alignment">
+            <button role="radio"
+                    class="item align-left popup"
+                    aria-checked="true"
+                    tabindex="-1">
+                <span class="fa fa-align-left" aria-hidden="true"></span>
+                <span class="popup-label">
+            Text Align Left
+          </span>
+            </button>
+            <button role="radio"
+                    class="item align-center popup"
+                    aria-checked="false"
+                    tabindex="-1">
+                <span class="fa fa-align-center" aria-hidden="true"></span>
+                <span class="popup-label">
+            Text Align Center
+          </span>
+            </button>
+            <button role="radio"
+                    class="item align-right popup"
+                    aria-checked="false"
+                    tabindex="-1">
+                <span class="fa fa-align-right" aria-hidden="true"></span>
+                <span class="popup-label">
+            Text Align Right
+          </span>
+            </button>
+        </div>
+        <div class="menu-popup group">
+            <button aria-haspopup="true"
+                    aria-controls="menu1"
+                    class="item menu-button"
+                    tabindex="-1"
+                    aria-label="Font: Sans-serif"
+                    style="text-align: left; width: 140px; font-family: sans-serif">
+                SANS-SERIF
+                <span class="decrease">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 width="12"
+                 height="12">
+              <polygon class="decrease"
+                       fill="#333"
+                       points="0,2 11,2 6,12"></polygon>
+            </svg>
+          </span>
+            </button>
+            <ul role="menu"
+                id="menu1"
+                aria-label="Font Family">
+                <li role="menuitemradio"
+                    aria-checked="true"
+                    style="font-family: sans-serif">
+                    Sans-serif
+                </li>
+                <li role="menuitemradio"
+                    aria-checked="false"
+                    style="font-family: serif">
+                    Serif
+                </li>
+                <li role="menuitemradio"
+                    aria-checked="false"
+                    style="font-family: monospace">
+                    Monospace
+                </li>
+                <li role="menuitemradio"
+                    aria-checked="false"
+                    style="font-family: fantasy">
+                    Fantasy
+                </li>
+                <li role="menuitemradio"
+                    aria-checked="false"
+                    style="font-family: cursive">
+                    Cursive
+                </li>
+            </ul>
+        </div>
+        <div class="group">
+            <div class="item spinbutton"
+                 role="spinbutton"
+                 tabindex="-1"
+                 aria-valuenow="14"
+                 aria-valuetext="14pt"
+                 aria-valuemin="8"
+                 aria-valuemax="40"
+                 aria-label="Font size in points">
+          <span class="value">
+            14pt
+          </span>
+                <span class="increase">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 width="12"
+                 height="12">
+              <polygon class="increase"
+                       fill="#333"
+                       points="0,12 11,12 6,2"></polygon>
+            </svg>
+          </span>
+                <span class="decrease">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 width="12"
+                 height="12">
+              <polygon class="decrease"
+                       fill="#333"
+                       points="0,2 11,2 6,12"></polygon>
+            </svg>
+          </span>
+            </div>
+        </div>
+    </div>
+
+    <div>
 		<textarea id="textarea1"
 			rows="50"
 			cols="80"
-			style="background-color:#f8f9fa;color:black"
 			placeholder="Ecrivez ici..."></textarea>
 	</div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io('http://localhost:3000');
+        const l = console.log
+        function getEl(id) {
+            return document.getElementById(id)
+        }
+        const editor = getEl("textarea1")
+        editor.addEventListener("keyup", (evt) => {
+            const text = editor.value
+            socket.emit('message', text)
+        })
+        socket.on('message', (data) => {
+            editor.value = data
+        });
+
+        const saveButton = document.getElementById('saveButton');
+        saveButton.onclick = function() {
+            socket.emit('save', 'TODO title');
+        };
+
+        const loadButton = document.getElementById('loadButton');
+        loadButton.onclick = function() {
+            socket.emit('load', 'TODO title');
+        };
+        socket.on('loadBuffer', (buffer) => {
+            editor.value = buffer
+        });
+    </script>
+    <script src="/js/fontMenu.js"></script>
+    <script src="/js/fontMenuButton.js"></script>
+    <script src="/js/fontMenuItem.js"></script>
+    <script src="/js/fontToolbarItem.js"></script>
+    <script src="/js/formatToolbar.js"></script>
+    <script src="/js/spinButton.js"></script>
+
 </body>
-
-
-<script src="/socket.io/socket.io.js"></script>
-<script>
-    var socket = io('http://localhost:3000');
-    const l = console.log
-    function getEl(id) {
-        return document.getElementById(id)
-    }
-    const editor = getEl("textarea1")
-    editor.addEventListener("keyup", (evt) => {
-        const text = editor.value
-        socket.emit('message', text)
-    })
-    socket.on('message', (data) => {
-        editor.value = data
-    });
-
-    const saveButton = document.getElementById('saveButton');
-    saveButton.onclick = function() {
-      socket.emit('save', 'TODO title');
-    };
-
-    const loadButton = document.getElementById('loadButton');
-    loadButton.onclick = function() {
-      socket.emit('load', 'TODO title');
-    };
-    socket.on('loadBuffer', (buffer) => {
-      editor.value = buffer
-    });
-</script>
 </html>
