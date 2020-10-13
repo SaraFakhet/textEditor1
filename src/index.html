@@ -210,6 +210,7 @@
         editor.addEventListener("keyup", (evt) => {
             const text = editor.value
             socket.emit('message', text)
+            socket.emit('version', "SHAM")
         })
         socket.on('message', (data) => {
             editor.value = data
