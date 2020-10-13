@@ -21,7 +21,13 @@ var schema = mongoose.Schema({
     // underline: bool
     // italic: bool
 });
+var save = mongoose.Schema({
+    user: String,
+    buffer: String,
+    createdAt: Object,
+});
 
+var mySave = mongoose.model("save", save, "myCollection");
 var myModel = mongoose.model("model", schema, "myCollection");
 
 /*end mongoose*/
@@ -38,12 +44,20 @@ var fullText = ""
 
 server.listen(port, hostname, () => log(`Server running at http://${hostname}:${port}/`))
 io.on('connection', (socket) => {
-    log('connected')
-	socket.broadcast.emit('message', fullText)
+	socket.emit('message', fullText)
     socket.on('message', (evt) => {
-		fullText = evt
+        fullText = evt
+        socket.emit('message', evt)
         socket.broadcast.emit('message', evt)
     })
+
+    socket.on('version', async (evt) => {
+        let version = new mySave({user: evt, buffer: fullText, createdAt: Date.now()});
+        await version.save(function (err) {
+            if (err) return console.error(err);
+        })
+    })
+
     socket.on('bold', () => {
         socket.broadcast.emit('bold')
     })
@@ -56,8 +70,9 @@ io.on('connection', (socket) => {
     })
     socket.on('load', async (evt) => {
         let doc1 = await myModel.find({fileName: evt}).exec();
-        socket.emit('loadBuffer', doc1[0].buffer)
-        socket.broadcast.emit('loadBuffer', doc1[0].buffer)
+        fullText = doc1[0].buffer;
+        socket.emit('message', fullText)
+        socket.broadcast.emit('message', fullText)
     })
 })
 io.on('disconnect', (evt) => {
