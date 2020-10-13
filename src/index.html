@@ -191,13 +191,9 @@
                 <div class="popupTitle" style="margin-bottom: 30px">Choisissez un fichier</div>
                 <div style="overflow: hidden; overflow-y: scroll; height: 360px;">
                     <div class="doc_grid" id="grid">
-                        <script>
-                            socket.on('loadallnext', async (docs) => {
-                                docs.map((elt) => {
-                                    $("grid").append("<div>"+ '<img src="images/document.svg">' + "<p>" + elt.fileName + "</p>");
-                                })
-                            })
-                        </script>
+
+
+
                     </div>
                 </div>
             </form>
@@ -244,6 +240,19 @@
             document.querySelector('.bg-modal').style.display = "none";
             socket.emit('save', document.getElementById('submitSaveInput').value);
         };
+
+        function onClickLoad(filename) {
+            socket.emit('load', filename);
+            document.querySelector('.bg-modal2').style.display = "none";
+        }
+
+        socket.on('loadallnext', async (docs) => {
+            document.getElementById("grid").innerHTML = "";
+            docs.forEach((elt) => {
+                document.getElementById("grid").innerHTML +=
+                    "<div onclick=onClickLoad(\""+elt.fileName+"\")>" + '<img src="images/document.svg">' + "<p>" + elt.fileName + "</p></div>"
+            })
+        })
 
     </script>
     <script src="/js/fontMenu.js"></script>
