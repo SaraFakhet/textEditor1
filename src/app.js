@@ -103,7 +103,7 @@ io.on('connection', (socket) => {
 
     socket.on('save', async (evt) => {
         evt = evt.replace(' ', '_');
-        let doc1 = new myModel({fileName: evt, buffer: fullText, bold: bold, underline: underline, italic: italic});
+        let doc1 = new myModel({fileName: evt, buffer: fullText, bold: bold, underline: underline, italic: italic, align: align, font: font, fontSize: fontSize});
         try {
             await doc1.save();
         } catch (e) {
@@ -130,6 +130,18 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('underline', underline);
         socket.emit('italic', italic);
         socket.broadcast.emit('italic', italic);
+		
+		align = doc1[0].align;
+		socket.emit('align', align);
+        socket.broadcast.emit('align', align);
+		
+		font = doc1[0].font;
+		socket.emit('font', font);
+        socket.broadcast.emit('font', font);
+		
+		fontSize = doc1[0].fontSize;
+		socket.emit('fontSize', fontSize);
+        socket.broadcast.emit('fontSize', fontSize);
 
         // send if true to front
         socket.emit('message', fullText)

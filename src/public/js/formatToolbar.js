@@ -62,10 +62,6 @@ FormatToolbar.prototype.init = function () {
 	socket.on('font', (value) => {
 		this.setFontFamily(value);
 	})
-	
-	socket.on('fontSize', (value) => {
-		this.changeFontSize(value);
-	})
 };
 
 FormatToolbar.prototype.setBold = function (toolbarItem, isBold) {
