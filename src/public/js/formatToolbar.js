@@ -119,6 +119,7 @@ FormatToolbar.prototype.activateItem = function (toolbarItem) {
     switch (toolbarItem.buttonAction) {
         case 'bold':
             this.toggleBold(toolbarItem);
+            socket.emit('bold');
             break;
         case 'underline':
             this.toggleUnderline(toolbarItem);
