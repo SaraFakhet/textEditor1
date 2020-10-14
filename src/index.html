@@ -175,9 +175,9 @@
 
     <div class="versionning">
         <div style="margin: inherit; margin-bottom: 20px; font-family: sans-serif;">
-            Dernière version des fichiers en base de données
+            Historique de modification du fichier en base de données
         </div>
-        <div style = "overflow: hidden; overflow-y: scroll; height: 280px;">
+        <div style = "overflow: hidden; overflow-y: scroll; height: 285px;">
             <div class="versio_grid" id="versio_grid">
             </div>
         </div>
@@ -249,7 +249,7 @@
             document.getElementById("versio_grid").innerHTML = "";
             saved.forEach((file) => {
                 var d = new Date(file.createdAt);
-                document.getElementById("versio_grid").innerHTML += "<div> <div class='buffer'>" + file.buffer + "</div><div class='buffer_info'>Modifié par : " + file.user + " Le : " + d + "</div></div>";
+                document.getElementById("versio_grid").innerHTML += "<div> <div class='buffer'>" + file.buffer + "</div><div class='buffer_info'>Modifié par : " + file.user + "<br> Le : " + d + "</div></div>";
             })
         })
 
