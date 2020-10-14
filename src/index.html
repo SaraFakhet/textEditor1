@@ -313,7 +313,7 @@
             document.getElementById("grid").innerHTML = ""
             docs.forEach((elt) => {
                 document.getElementById("grid").innerHTML +=
-                    "<div onclick=onClickLoad(\""+elt.fileName+"\")>" + '<img src="images/document.svg" style="height: 105px;">' + "<p style='margin: 10px; font-family: sans-serif;'>" + elt.fileName + "</p></div>"
+                    "<div onclick=onClickLoad(\""+elt.fileName+"\")>" + '<img src="images/document.svg" style="height: 105px;">' + "<p style='margin: 10px; font-family: sans-serif;overflow: hidden;text-overflow: ellipsis;width: 105px;'>" + elt.fileName + "</p></div>"
             })
         })
 
@@ -321,7 +321,7 @@
             document.getElementById("grid2").innerHTML = ""
             docs.forEach((elt) => {
                 document.getElementById("grid2").innerHTML +=
-                    "<div onclick=onClickTrash(\""+elt.fileName+"\")>" + '<img src="images/document.svg"> style="height: 105px;"' + "<p style='margin: 10px; font-family: sans-serif;'>" + elt.fileName + "</p></div>"
+                    "<div onclick=onClickTrash(\""+elt.fileName+"\")>" + '<img src="images/document.svg" style="height: 105px;">' + "<p style='margin: 10px; font-family: sans-serif;overflow: hidden;text-overflow: ellipsis;width: 105px;'>" + elt.fileName + "</p></div>"
             })
         })
 
