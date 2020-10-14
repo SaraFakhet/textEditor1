@@ -54,9 +54,10 @@ var italic = false
 var align = 'left'
 var font = 'sans-serif'
 var fontSize = 14
+var currentFileName = ""
 
 server.listen(port, hostname, () => log(`Server running at http://${hostname}:${port}/`))
-io.on('connection', (socket) => {
+io.on('connection', async (socket) => {
 	socket.emit('message', fullText)
     socket.emit('bold', bold);
     socket.emit('underline', underline);
@@ -64,6 +65,10 @@ io.on('connection', (socket) => {
     socket.emit('align', align);
     socket.emit('font', font);
     socket.emit('fontSize', fontSize);
+    if (currentFileName !== "") {
+        let fileSaved = await mySave.find({fileName:currentFileName});
+        socket.emit('displaysaved', fileSaved);
+    }
     socket.on('message', (evt) => {
         fullText = evt
         socket.emit('message', evt)
@@ -72,6 +77,7 @@ io.on('connection', (socket) => {
 
     socket.on('version', async (evt, filename) => {
         filename = filename.replace(/ /g, '_');
+        currentFileName = filename;
         let version = new mySave({fileName: filename, user: evt, buffer: fullText, createdAt: Date.now()});
         await version.save(function (err) {
             if (err) return console.error(err);
@@ -153,6 +159,7 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('message', fullText)
 
         let fileSaved = await mySave.find({fileName:evt});
+        currentFileName = evt;
         socket.emit('displaysaved', fileSaved);
         socket.broadcast.emit('displaysaved', fileSaved);
     })
