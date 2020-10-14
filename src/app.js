@@ -11,7 +11,6 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
     // we're connected!
-    console.log("myDB connected");
 });
 
 var schema = mongoose.Schema({
@@ -56,8 +55,9 @@ var font = 'sans-serif'
 var fontSize = 14
 var currentFileName = ""
 
-server.listen(port, hostname, () => log(`Server running at http://${hostname}:${port}/`))
+server.listen(port, hostname, () => log(`Server running at http://${hostname}:${port}/`)) // lance le serveur
 io.on('connection', async (socket) => {
+    /* parametrage de l'affichage à la 1ere connexion d'un nouveau user */
 	socket.emit('message', fullText)
     socket.emit('bold', bold);
     socket.emit('underline', underline);
@@ -69,23 +69,14 @@ io.on('connection', async (socket) => {
         let fileSaved = await mySave.find({fileName:currentFileName});
         socket.emit('displaysaved', fileSaved);
     }
+    /* transmission des modifications à tous les users*/
     socket.on('message', (evt) => {
         fullText = evt
         socket.emit('message', evt)
         socket.broadcast.emit('message', evt)
     })
 
-    socket.on('version', async (evt, filename) => {
-        filename = filename.replace(/ /g, '_');
-        currentFileName = filename;
-        let version = new mySave({fileName: filename, user: evt, buffer: fullText, createdAt: Date.now()});
-        await version.save(function (err) {
-            if (err) return console.error(err);
-        })
-        let fileSaved = await mySave.find({fileName:filename});
-        socket.emit('displaysaved', fileSaved);
-        socket.broadcast.emit('displaysaved', fileSaved);
-    })
+    /* emission modifications de paramètrages d'affichage appelées par le front à tous les users*/
 
     socket.on('bold', () => {
         bold = !bold;
@@ -121,14 +112,17 @@ io.on('connection', async (socket) => {
             await myModel.updateOne({fileName:evt},{ buffer: fullText});
         }
     })
+
     socket.on('loadall', async () => {
         let docs = await myModel.find({});
         socket.emit('loadallnext', docs);
     })
+
     socket.on('trashall', async (evt) => {
         let docs = await myModel.find({});
         socket.emit('trashallnext', docs);
     })
+
     socket.on('load', async (evt) => {
         let doc1 = await myModel.find({fileName: evt}).exec();
         fullText = doc1[0].buffer;
@@ -154,7 +148,6 @@ io.on('connection', async (socket) => {
 		socket.emit('fontSize', fontSize);
         socket.broadcast.emit('fontSize', fontSize);
 
-        // send if true to front
         socket.emit('message', fullText)
         socket.broadcast.emit('message', fullText)
 
@@ -163,24 +156,21 @@ io.on('connection', async (socket) => {
         socket.emit('displaysaved', fileSaved);
         socket.broadcast.emit('displaysaved', fileSaved);
     })
+
     socket.on('trash', async (evt) => {
         await myModel.deleteOne({fileName: evt});
         await mySave.deleteMany({fileName: evt});
     })
 
-    /*socket.on('trashAllVersion', async () => {
-        await mySave.deleteMany({}, function(err) {
-            if (err) {
-                console.log(err);
-            }
-        });
-    })*/
-
-    /*socket.on('versioning', async () => {
-        let fileSaved = await mySave.find({});
+    socket.on('version', async (evt, filename) => {
+        filename = filename.replace(/ /g, '_');
+        currentFileName = filename;
+        let version = new mySave({fileName: filename, user: evt, buffer: fullText, createdAt: Date.now()});
+        await version.save(function (err) {
+            if (err) return console.error(err);
+        })
+        let fileSaved = await mySave.find({fileName:filename});
         socket.emit('displaysaved', fileSaved);
-    })*/
-})
-io.on('disconnect', (evt) => {
-    log('some people left')
+        socket.broadcast.emit('displaysaved', fileSaved);
+    })
 })

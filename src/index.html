@@ -19,7 +19,6 @@
     </div>
 
     <h1>Éditeur collaboratif</h1>
-    <h2></h2>
     <div class="format"
          role="toolbar"
          aria-label="Text Formatting"
@@ -249,7 +248,8 @@
             document.getElementById("versio_grid").innerHTML = "";
             saved.forEach((file) => {
                 var d = new Date(file.createdAt);
-                document.getElementById("versio_grid").innerHTML += "<div> <div class='buffer'>" + file.buffer + "</div><div class='buffer_info'>Modifié par : " + file.user + "<br> Le : " + d + "</div></div>";
+                document.getElementById("versio_grid").innerHTML +=
+                "<div> <div class='buffer'>" + file.buffer + "</div><div class='buffer_info'>Modifié par : " + file.user + "<br> Le : " + d + "</div></div>";
             })
         })
 
