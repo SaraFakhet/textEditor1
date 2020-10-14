@@ -245,10 +245,11 @@
         var user = new User();
         user.init();
 
-        socket.emit('versioning');
         socket.on('displaysaved', async (saved) => {
+            document.getElementById("versio_grid").innerHTML = "";
             saved.forEach((file) => {
-                document.getElementById("versio_grid").innerHTML += "<div> <div class='buffer'>" + file.buffer + "</div><div class='buffer_info'>Modifié par :" + file.user + "Le : " + file.createdAt + "</div></div>";
+                var d = new Date(file.createdAt);
+                document.getElementById("versio_grid").innerHTML += "<div> <div class='buffer'>" + file.buffer + "</div><div class='buffer_info'>Modifié par : " + file.user + " Le : " + d + "</div></div>";
             })
         })
 
@@ -256,7 +257,6 @@
         editor.addEventListener("keyup", (evt) => {
             const text = editor.value
             socket.emit('message', text)
-            socket.emit('version', user.username)
         })
         socket.on('message', (data) => {
             editor.value = data
@@ -294,12 +294,13 @@
         const submitSaveButton = document.getElementById('submitSaveButton');
         submitSaveButton.onclick = function() {
             document.querySelector('.bg-modal').style.display = "none";
-            socket.emit('save', document.getElementById('submitSaveInput').value);
+            var filename = document.getElementById('submitSaveInput').value;
+            socket.emit('save', filename);
+            socket.emit('version', user.username, filename)
         };
 
         function onClickLoad(filename) {
             socket.emit('load', filename);
-            socket.emit('trashAllVersion');
             document.querySelector('.bg-modal2').style.display = "none";
         }
 

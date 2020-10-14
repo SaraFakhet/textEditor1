@@ -28,6 +28,7 @@ var schema = mongoose.Schema({
 	fontSize: Number,
 });
 var saveSchema = mongoose.Schema({
+    fileName: String,
     user: String,
     buffer: String,
     createdAt: Object,
@@ -69,11 +70,15 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('message', evt)
     })
 
-    socket.on('version', async (evt) => {
-        let version = new mySave({user: evt, buffer: fullText, createdAt: Date.now()});
+    socket.on('version', async (evt, filename) => {
+        filename = filename.replace(/ /g, '_');
+        let version = new mySave({fileName: filename, user: evt, buffer: fullText, createdAt: Date.now()});
         await version.save(function (err) {
             if (err) return console.error(err);
         })
+        let fileSaved = await mySave.find({fileName:filename});
+        socket.emit('displaysaved', fileSaved);
+        socket.broadcast.emit('displaysaved', fileSaved);
     })
 
     socket.on('bold', () => {
@@ -146,23 +151,28 @@ io.on('connection', (socket) => {
         // send if true to front
         socket.emit('message', fullText)
         socket.broadcast.emit('message', fullText)
+
+        let fileSaved = await mySave.find({fileName:evt});
+        socket.emit('displaysaved', fileSaved);
+        socket.broadcast.emit('displaysaved', fileSaved);
     })
     socket.on('trash', async (evt) => {
         await myModel.deleteOne({fileName: evt});
+        await mySave.deleteMany({fileName: evt});
     })
 
-    socket.on('trashAllVersion', async () => {
-        await mySave.deleteMany({}, function(err, result) {
+    /*socket.on('trashAllVersion', async () => {
+        await mySave.deleteMany({}, function(err) {
             if (err) {
                 console.log(err);
             }
         });
-    })
+    })*/
 
-    socket.on('versioning', async () => {
+    /*socket.on('versioning', async () => {
         let fileSaved = await mySave.find({});
         socket.emit('displaysaved', fileSaved);
-    })
+    })*/
 })
 io.on('disconnect', (evt) => {
     log('some people left')
