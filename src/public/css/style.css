@@ -298,6 +298,8 @@ textarea {
     overflow-wrap: anywhere;
     overflow: hidden;
     overflow-y: scroll;
+    text-align: justify;
+    margin: auto;
 }
 
 .buffer_info {
