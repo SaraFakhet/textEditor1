@@ -170,4 +170,11 @@ input {
 .p {
     margin: 10px;
     font-family: sans-serif;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 105px;
+}
+
+.img {
+    height: 105px;
 }
