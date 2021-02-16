@@ -19,7 +19,6 @@
     </div>
 
     <h1>Éditeur collaboratif</h1>
-    <h2></h2>
     <div class="format"
          role="toolbar"
          aria-label="Text Formatting"
@@ -172,6 +171,16 @@
 			cols="80"
 			placeholder="Ecrivez ici..."></textarea>
     </div>
+
+    <div class="versionning">
+        <div style="margin: inherit; margin-bottom: 20px; font-family: sans-serif;">
+            Historique de modification du fichier en base de données
+        </div>
+        <div style = "overflow: hidden; overflow-y: scroll; height: 285px;">
+            <div class="versio_grid" id="versio_grid">
+            </div>
+        </div>
+    </div>
     
     <div class="bg-modal">
         <div class="modal-contents">
@@ -231,13 +240,23 @@
         function getEl(id) {
             return document.getElementById(id)
         }
+
         var user = new User();
         user.init();
+
+        socket.on('displaysaved', async (saved) => {
+            document.getElementById("versio_grid").innerHTML = "";
+            saved.forEach((file) => {
+                var d = new Date(file.createdAt);
+                document.getElementById("versio_grid").innerHTML +=
+                "<div> <div class='buffer'>" + file.buffer + "</div><div class='buffer_info'>Modifié par : " + file.user + "<br> Le : " + d + "</div></div>";
+            })
+        })
+
         const editor = getEl("textarea1")
         editor.addEventListener("keyup", (evt) => {
             const text = editor.value
             socket.emit('message', text)
-            socket.emit('version', user.username)
         })
         socket.on('message', (data) => {
             editor.value = data
@@ -275,7 +294,9 @@
         const submitSaveButton = document.getElementById('submitSaveButton');
         submitSaveButton.onclick = function() {
             document.querySelector('.bg-modal').style.display = "none";
-            socket.emit('save', document.getElementById('submitSaveInput').value);
+            var filename = document.getElementById('submitSaveInput').value;
+            socket.emit('save', filename);
+            socket.emit('version', user.username, filename)
         };
 
         function onClickLoad(filename) {
@@ -292,7 +313,7 @@
             document.getElementById("grid").innerHTML = ""
             docs.forEach((elt) => {
                 document.getElementById("grid").innerHTML +=
-                    "<div onclick=onClickLoad(\""+elt.fileName+"\")>" + '<img src="images/document.svg">' + "<p style='margin: 10px; font-family: sans-serif;'>" + elt.fileName + "</p></div>"
+                    "<div onclick=onClickLoad(\""+elt.fileName+"\")>" + '<img src="images/document.svg" style="height: 105px;">' + "<p style='margin: 10px; font-family: sans-serif;overflow: hidden;text-overflow: ellipsis;width: 105px;'>" + elt.fileName + "</p></div>"
             })
         })
 
@@ -300,9 +321,10 @@
             document.getElementById("grid2").innerHTML = ""
             docs.forEach((elt) => {
                 document.getElementById("grid2").innerHTML +=
-                    "<div onclick=onClickTrash(\""+elt.fileName+"\")>" + '<img src="images/document.svg">' + "<p style='margin: 10px; font-family: sans-serif;'>" + elt.fileName + "</p></div>"
+                    "<div onclick=onClickTrash(\""+elt.fileName+"\")>" + '<img src="images/document.svg" style="height: 105px;">' + "<p style='margin: 10px; font-family: sans-serif;overflow: hidden;text-overflow: ellipsis;width: 105px;'>" + elt.fileName + "</p></div>"
             })
         })
+
     </script>
     <script src="/js/fontMenu.js"></script>
     <script src="/js/fontMenuButton.js"></script>

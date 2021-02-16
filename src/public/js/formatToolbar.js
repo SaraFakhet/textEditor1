@@ -62,20 +62,17 @@ FormatToolbar.prototype.init = function () {
 	socket.on('font', (value) => {
 		this.setFontFamily(value);
 	})
-	
-	socket.on('fontSize', (value) => {
-		this.changeFontSize(value);
-	})
 };
 
 FormatToolbar.prototype.setBold = function (toolbarItem, isBold) {
+	this.setFocusItem(this.toolbarItems[0]);
     if (isBold) {
 		this.textarea.style.fontWeight = 'bold';
-        toolbarItem.setPressed();
+        this.toolbarItems[0].setPressed();
     }
     else {
 		this.textarea.style.fontWeight = 'normal';
-        toolbarItem.resetPressed();
+        this.toolbarItems[0].resetPressed();
     }
 };
 
@@ -90,36 +87,15 @@ FormatToolbar.prototype.toggleBold = function (toolbarItem) {
     }
 };
 
-FormatToolbar.prototype.setUnderline = function (toolbarItem, isUnderline) {
-    if (isUnderline) {
-		this.textarea.style.textDecoration = 'underline';
-        toolbarItem.setPressed();
-    }
-    else {
-        this.textarea.style.textDecoration = 'none';
-        toolbarItem.resetPressed();
-    }
-};
-
-FormatToolbar.prototype.toggleUnderline = function (toolbarItem) {
-    if (toolbarItem.isPressed()) {
-        this.textarea.style.textDecoration = 'none';
-        toolbarItem.resetPressed();
-    }
-    else {
-        this.textarea.style.textDecoration = 'underline';
-        toolbarItem.setPressed();
-    }
-};
-
 FormatToolbar.prototype.setItalic = function (toolbarItem, isItalic) {
+	this.setFocusItem(this.toolbarItems[1]);
     if (isItalic) {
 		this.textarea.style.fontStyle = 'italic';
-        toolbarItem.setPressed(); 
+        this.toolbarItems[1].setPressed(); 
     }
     else {
 		this.textarea.style.fontStyle = 'normal';
-        toolbarItem.resetPressed();
+        this.toolbarItems[1].resetPressed();
     }
 };
 
@@ -134,9 +110,31 @@ FormatToolbar.prototype.toggleItalic = function (toolbarItem) {
     }
 };
 
+FormatToolbar.prototype.setUnderline = function (toolbarItem, isUnderline) {
+	this.setFocusItem(this.toolbarItems[2]);
+    if (isUnderline) {
+		this.textarea.style.textDecoration = 'underline';
+        this.toolbarItems[2].setPressed();
+    }
+    else {
+        this.textarea.style.textDecoration = 'none';
+        this.toolbarItems[2].resetPressed();
+    }
+};
+
+FormatToolbar.prototype.toggleUnderline = function (toolbarItem) {
+    if (toolbarItem.isPressed()) {
+        this.textarea.style.textDecoration = 'none';
+        toolbarItem.resetPressed();
+    }
+    else {
+        this.textarea.style.textDecoration = 'underline';
+        toolbarItem.setPressed();
+    }
+};
+
 FormatToolbar.prototype.changeFontSize = function (value) {
     this.textarea.style.fontSize = value + 'pt';
-	socket.emit('fontSize', value);
 };
 
 FormatToolbar.prototype.setAlignment = function (toolbarItem) {

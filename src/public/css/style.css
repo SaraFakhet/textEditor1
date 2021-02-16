@@ -14,10 +14,6 @@ h1,
     color:white;
 }
 
-.user {
-
-}
-
 textarea {
     width: 990px;
     padding: 0.25em;
@@ -270,4 +266,43 @@ textarea {
 [role="toolbar"] [role="spinbutton"]:focus .decrease {
     fill: #005a9c;
     border-color: #005a9c;
+}
+
+.versionning {
+    background: white;
+    width: 1000px;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 40px;
+    border: 1px solid;
+    border-radius: 5px;
+    height: 350px;
+}
+
+.versio_grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: minmax(60px, auto);
+    grid-column-gap: 20px;
+    grid-row-gap: 10px;
+    justify-content: center;
+    width: 900px;
+    margin: auto;
+}
+
+.buffer {
+    width: 250px;
+    border: 1px solid;
+    border-radius: 3px;
+    height: 250px;
+    overflow-wrap: anywhere;
+    overflow: hidden;
+    overflow-y: scroll;
+    text-align: justify;
+    margin: auto;
+}
+
+.buffer_info {
+    font-family: sans-serif;
+    margin: 10px;
 }
